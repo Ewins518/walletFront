@@ -1,3 +1,4 @@
+import 'package:apiproject/UserPage/controllers/FieldController.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -42,7 +43,7 @@ class StarageDetails extends StatelessWidget {
           StorageInfoCard(
             svgSrc: "assets/icons/folder.svg",
             title: "Montant total rechargé",
-            numOfOpr: 28000,
+            numOfOpr: RechargeController.montantTotalRecharger,
           ),
           StorageInfoCard(
             svgSrc: "assets/icons/unknown.svg",

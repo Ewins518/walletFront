@@ -1,12 +1,10 @@
 import 'package:apiproject/UserPage/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'UserPage/controllers/MenuController.dart';
 import 'delayed_animation.dart';
 import 'package:apiproject/main.dart';
-import 'package:apiproject/login_page.dart';
 
 class LoginPage extends StatelessWidget {
   @override

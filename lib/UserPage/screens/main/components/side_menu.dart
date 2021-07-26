@@ -1,5 +1,12 @@
+import 'package:apiproject/UserPage/controllers/MenuController.dart';
+import 'package:apiproject/UserPage/screens/renversement/renvers_screen.dart';
+import 'package:apiproject/UserPage/screens/settings/settings_screen.dart';
+import 'package:apiproject/UserPage/screens/transaction/transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+
+import '../main_screen.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({
@@ -17,17 +24,60 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Dashbord",
             svgSrc: "assets/icons/menu_dashbord.svg",
-            press: () {},
+            press: () {
+               Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                        MultiProvider(
+                      providers: [
+                       ChangeNotifierProvider(
+                         create: (context) => MenuController(),
+                       ),
+                     ],
+                  child: MainScreen(),
+                 ),
+                    ),
+                  );
+           },
           ),
           DrawerListTile(
             title: "Transaction",
             svgSrc: "assets/icons/menu_tran.svg",
-            press: () {},
+            press: () {
+                 Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                        MultiProvider(
+                      providers: [
+                       ChangeNotifierProvider(
+                         create: (context) => MenuController(),
+                       ),
+                     ],
+                  child: TransactionScreen(),
+                 ),
+                    ),
+                  );
+            },
           ),
           DrawerListTile(
             title: "Renversement",
             svgSrc: "assets/icons/menu_task.svg",
-            press: () {},
+            press: () { Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                        MultiProvider(
+                      providers: [
+                       ChangeNotifierProvider(
+                         create: (context) => MenuController(),
+                       ),
+                     ],
+                  child: RenversScreen(),
+                 ),
+                    ),
+                  );},
           ),
           DrawerListTile(
             title: "Documentation",
@@ -52,7 +102,21 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Settings",
             svgSrc: "assets/icons/menu_setting.svg",
-            press: () {},
+            press: () { Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                        MultiProvider(
+                      providers: [
+                       ChangeNotifierProvider(
+                         create: (context) => MenuController(),
+                       ),
+                     ],
+                  child: SettingsScreen(),
+                 ),
+                    ),
+                  );
+                  },
           ),
         ],
       ),

@@ -3,31 +3,28 @@ import 'package:apiproject/UserPage/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
 
-class MyRef extends StatefulWidget {
+class AskRenvers extends StatefulWidget {
   
   @override
-  _MyRefState createState() => _MyRefState();
+  _AskRenversState createState() => _AskRenversState();
 }
 
-class _MyRefState extends State<MyRef> {
-  bool isRechargeScreen = false;
-  bool confirmer = false;
+class _AskRenversState extends State<AskRenvers> {
   TextEditingController _numberController = TextEditingController();
-  TextEditingController _montantController = TextEditingController();
-  Map<String, String> data = {};
-    
+    TextEditingController _montantController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final Size _size = MediaQuery.of(context).size;
+    //final Size _size = MediaQuery.of(context).size;
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Ref: ",
+              "Solde: $solde",
               style: Theme.of(context).textTheme.subtitle1,
             ),
+            if(!Responsive.isMobile(context))
             ElevatedButton.icon(
               style: TextButton.styleFrom(
                 padding: EdgeInsets.symmetric(
@@ -38,10 +35,31 @@ class _MyRefState extends State<MyRef> {
               ),
               onPressed: recharge,
               icon: Icon(Icons.add),
-              label: Text("Récharger"),
+              label: Text("Demander un renversement"),
             ),
           ],
         ),
+        if(Responsive.isMobile(context))
+        Align(
+          alignment: Alignment.centerRight,
+            child: Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child:       
+                 ElevatedButton.icon(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: defaultPadding * 1.5,
+                      vertical:
+                          defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
+                    ),
+                  ),
+                  onPressed: recharge,
+                  icon: Icon(Icons.add),
+                  label: Text("Demander un renversement"),
+                ),
+              
+            ),
+          ),
       ],
     );
     
@@ -54,22 +72,26 @@ class _MyRefState extends State<MyRef> {
         return new AlertDialog(
           scrollable: true,
           backgroundColor: Colors.white,
-          title:new Text("Récharger compte", textScaleFactor: 1, style: TextStyle(color: Colors.black),),
+          title:new Text("Effectuer renversement", textScaleFactor: 1, style: TextStyle(color: Colors.black),),
           content:   Container(
-            width: 100,
-            height: 120,
+            width: 110,
+            height: 150,
                margin: EdgeInsets.only(top: 20),
-               child: Column(
-                   children: [
-                     buildTextField( "Number", _numberController ),
-                     
-                     buildTextField( "Montant", _montantController),
-                   
-                      Row(
+               child: SingleChildScrollView(
+                 child:
+                   Column(
+              
+                       children: [
+                         buildTextField( "No Téléphone", false, _numberController),
+                         
+                         buildTextField( "Montant", false, _montantController),
+                       
+                          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,),
               ],
           ),
-          ),
+               ),
+               ),
           contentPadding: EdgeInsets.all(10),
           actions: <Widget> [
             new FlatButton(
@@ -83,19 +105,13 @@ class _MyRefState extends State<MyRef> {
                ),
                   new FlatButton(
                  onPressed: (){
-
-                  data = {
+                    Map<String,String> data = {
                           "noTel": _numberController.text,
                           "montant": _montantController.text,
                           };  
-                   setState((){
-                      solde += int.parse(_montantController.text); 
-                       RechargeController.montantTotalRecharger  += int.parse(_montantController.text) ;
-                        Navigator.pop(context);  
-                   });       
-                     
-                  
-                 
+
+                          print(data);
+                   Navigator.pop(context);
                  },
                  child: new Text(
                    "Continuer",
@@ -108,13 +124,13 @@ class _MyRefState extends State<MyRef> {
     );
   }
 
-  Widget buildTextField( String hintText, TextEditingController _edit) {
+  Widget buildTextField( String hintText, bool text, TextEditingController _edit) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextField(
         controller: _edit,
         style: TextStyle(color: Colors.black),
-        keyboardType: TextInputType.number,
+        keyboardType: text ? TextInputType.text : TextInputType.number,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Palette.textColor1),
@@ -131,6 +147,5 @@ class _MyRefState extends State<MyRef> {
       ),
     );
   }
-
 }
 

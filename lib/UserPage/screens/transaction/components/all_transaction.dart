@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
-class RecentOperation extends StatelessWidget {
-  const RecentOperation({
+class AllTransaction extends StatelessWidget {
+  const AllTransaction({
     Key? key,
   }) : super(key: key);
 
@@ -22,7 +22,7 @@ class RecentOperation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Recents Operations",
+            "All transactions",
             style: Theme.of(context).textTheme.subtitle1,
           ),
           SizedBox(

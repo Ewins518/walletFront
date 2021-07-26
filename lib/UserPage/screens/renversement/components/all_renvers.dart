@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
-class RecentOperation extends StatelessWidget {
-  const RecentOperation({
+class AllRenvers extends StatelessWidget {
+  const AllRenvers({
     Key? key,
   }) : super(key: key);
 
@@ -22,7 +22,7 @@ class RecentOperation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Recents Operations",
+            "All Renversements",
             style: Theme.of(context).textTheme.subtitle1,
           ),
           SizedBox(
@@ -32,16 +32,13 @@ class RecentOperation extends StatelessWidget {
               minWidth: 600,
               columns: [
                 DataColumn(
-                  label: Text("No compte"),
+                  label: Text("No Téléphone"),
                 ),
                 DataColumn(
                   label: Text("Date"),
                 ),
                 DataColumn(
                   label: Text("Montant"),
-                ),
-                 DataColumn(
-                  label: Text("Nature"),
                 ),
               ],
               rows:  List.generate(
@@ -63,7 +60,6 @@ DataRow recentOprDataRow(RecentOpr fileInfo) {
       DataCell(Text(fileInfo.noCompte!)),
       DataCell(Text(fileInfo.date!)),
       DataCell(Text("$montant XOF")),
-      DataCell(Text(fileInfo.nature!)),
     ],
     
   );

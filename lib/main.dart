@@ -61,48 +61,6 @@ class MyApp extends StatefulWidget{
 
 }
 
-//class MyApp extends StatelessWidget {
-//  // This widget is the root of your application.
-//  @override
-//  Widget build(BuildContext context) {
-//    return MaterialApp(
-//      title: 'Transfert Rapid',
-//      debugShowCheckedModeBanner: false, 
-//      home: MainScreen()
-//    );
-//  } 
-//}
-//
-//
-//class MainScreen extends StatelessWidget {
-//  final Widget welcome = wellcomePage();
-//  final Widget social = SocialPage();
-// 
-//
-//void initState (){
-//
-//}
-//
-//     affiche  () async {
-//              bool visitingFlag = await getVisitingFlag();
-//              setVisitingFlag();
-//
-//              return visitingFlag;
-//     }
-// 
-//  @override
-// 
-//  Widget build(BuildContext context) {
-//    final visited = affiche();
-//
-//    if(visited == true)
-//     return social ;
-//     
-//    else
-//      return welcome;
-//  }        
-//}
-
 
 setVisitingFlag () async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
