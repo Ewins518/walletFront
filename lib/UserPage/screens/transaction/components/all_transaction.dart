@@ -45,8 +45,8 @@ class AllTransaction extends StatelessWidget {
                 ),
               ],
               rows:  List.generate(
-                demoRecentOpr.length,
-                (index) => recentOprDataRow(demoRecentOpr[index]),
+                demoTransaction.length,
+                (index) => recentOprDataRow(demoTransaction[index]),
               ),
             ),
           ),
@@ -61,7 +61,7 @@ DataRow recentOprDataRow(RecentOpr fileInfo) {
   return DataRow(
     cells: [
       DataCell(Text(fileInfo.noCompte!)),
-      DataCell(Text(fileInfo.date!)),
+      DataCell(Text(fileInfo.date!.toString())),
       DataCell(Text("$montant XOF")),
       DataCell(Text(fileInfo.nature!)),
     ],

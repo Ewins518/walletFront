@@ -32,7 +32,7 @@ class RecentOperation extends StatelessWidget {
               minWidth: 600,
               columns: [
                 DataColumn(
-                  label: Text("No compte"),
+                  label: Text("NoCompte/Tel"),
                 ),
                 DataColumn(
                   label: Text("Date"),
@@ -61,7 +61,7 @@ DataRow recentOprDataRow(RecentOpr fileInfo) {
   return DataRow(
     cells: [
       DataCell(Text(fileInfo.noCompte!)),
-      DataCell(Text(fileInfo.date!)),
+      DataCell(Text(fileInfo.date!.toString())),
       DataCell(Text("$montant XOF")),
       DataCell(Text(fileInfo.nature!)),
     ],

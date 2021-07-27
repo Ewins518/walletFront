@@ -1,4 +1,5 @@
 import 'package:apiproject/UserPage/controllers/FieldController.dart';
+import 'package:apiproject/UserPage/controllers/TransController.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -33,7 +34,7 @@ class StarageDetails extends StatelessWidget {
           StorageInfoCard(
             svgSrc: "assets/icons/Documents.svg",
             title: "Nombre de transaction",
-            numOfOpr: 0,
+            numOfOpr: nombreTransaction,
           ),
           StorageInfoCard(
             svgSrc: "assets/icons/media.svg",

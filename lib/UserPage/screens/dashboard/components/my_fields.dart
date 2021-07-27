@@ -1,4 +1,5 @@
 import 'package:apiproject/UserPage/controllers/FieldController.dart';
+import 'package:apiproject/UserPage/models/RecentOperation.dart';
 import 'package:apiproject/UserPage/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
@@ -15,6 +16,7 @@ class _MyRefState extends State<MyRef> {
   TextEditingController _numberController = TextEditingController();
   TextEditingController _montantController = TextEditingController();
   Map<String, String> data = {};
+  RechargeController ? rcg ;
     
   @override
   Widget build(BuildContext context) {
@@ -82,20 +84,24 @@ class _MyRefState extends State<MyRef> {
                     ),
                ),
                   new FlatButton(
-                 onPressed: (){
 
+                 onPressed: (){
+                   
                   data = {
                           "noTel": _numberController.text,
                           "montant": _montantController.text,
                           };  
+                       
                    setState((){
                       solde += int.parse(_montantController.text); 
-                       RechargeController.montantTotalRecharger  += int.parse(_montantController.text) ;
-                        Navigator.pop(context);  
-                   });       
-                     
-                  
-                 
+                      RechargeController.montantTotalRecharger  += int.parse(_montantController.text) ;
+                       rcg = RechargeController(data);
+                       rcg!.refresh();
+                      _montantController.clear(); 
+                      _numberController.clear();
+                       Navigator.pop(context);    
+                   });   
+           
                  },
                  child: new Text(
                    "Continuer",
@@ -112,7 +118,8 @@ class _MyRefState extends State<MyRef> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextField(
-        controller: _edit,
+       autofocus: true ,
+       controller: _edit,
         style: TextStyle(color: Colors.black),
         keyboardType: TextInputType.number,
         decoration: InputDecoration(

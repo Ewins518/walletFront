@@ -1,11 +1,14 @@
+import 'package:apiproject/UserPage/models/RecentOperation.dart';
+
 class RechargeController {
 static  int _solde = 100, montantTotalRecharger = 0;
 int ? _montant;
 String ? _noTel;
+String _nature = "Réchargé";
 
 RechargeController(dynamic map){
 
-    this._montant = map["montant"];
+    this._montant = int.parse(map["montant"]);
     this._noTel = map["noTel"];
 
   }
@@ -22,6 +25,14 @@ RechargeController(dynamic map){
     return map;
   }
 
+ void refresh(){
+    demoRecentOpr.add(RecentOpr(
+      noCompte: _noTel,
+      date: DateTime.now(),
+      montant: _montant,
+      nature: _nature ));
+  }
+
   bool numCorrect() {
     if(_noTel!.length == 8)
       return true;
@@ -35,6 +46,8 @@ RechargeController(dynamic map){
   void debiterCompte(){
     RechargeController._solde -= _montant!;
   }
+
 }
 
  int solde = RechargeController._solde;
+ 

@@ -1,4 +1,5 @@
 import 'package:apiproject/UserPage/controllers/FieldController.dart';
+import 'package:apiproject/UserPage/controllers/TransController.dart';
 import 'package:apiproject/UserPage/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
@@ -13,6 +14,8 @@ class _AddTransactionState extends State<AddTransaction> {
   TextEditingController _numberController = TextEditingController();
   TextEditingController _numberController1 = TextEditingController();
    TextEditingController _montantController = TextEditingController();
+   Map<String, String> data = {};
+  TransController ? trans ;
   @override
   Widget build(BuildContext context) {
     //final Size _size = MediaQuery.of(context).size;
@@ -110,11 +113,21 @@ class _AddTransactionState extends State<AddTransaction> {
 
                     Map<String,String> data = {
                           "noCompte": _numberController.text,
-                          "network": _montantController.text,
+                          "montant": _montantController.text,
                           };  
-
-                          print(data);
-                   Navigator.pop(context);
+                    setState((){
+                    recu = false;
+                    solde -= int.parse(_montantController.text); 
+                    nombreTransaction +=1  ;
+                    trans = TransController(data);
+                    trans!.refresh();
+                    _numberController.clear();
+                    _numberController1.clear();
+                    _montantController.clear();
+                     Navigator.pop(context);
+                    });
+                       //   print(data);
+                  
                  },
                  child: new Text(
                    "Continuer",

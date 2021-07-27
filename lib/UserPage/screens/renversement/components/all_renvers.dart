@@ -42,8 +42,8 @@ class AllRenvers extends StatelessWidget {
                 ),
               ],
               rows:  List.generate(
-                demoRecentOpr.length,
-                (index) => recentOprDataRow(demoRecentOpr[index]),
+                demoRenversement.length,
+                (index) => recentOprDataRow(demoRenversement[index]),
               ),
             ),
           ),
@@ -58,7 +58,7 @@ DataRow recentOprDataRow(RecentOpr fileInfo) {
   return DataRow(
     cells: [
       DataCell(Text(fileInfo.noCompte!)),
-      DataCell(Text(fileInfo.date!)),
+      DataCell(Text(fileInfo.date!.toString())),
       DataCell(Text("$montant XOF")),
     ],
     
