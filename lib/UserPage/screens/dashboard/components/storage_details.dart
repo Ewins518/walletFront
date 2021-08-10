@@ -32,22 +32,22 @@ class StarageDetails extends StatelessWidget {
           SizedBox(height: defaultPadding),
           Chart(),
           StorageInfoCard(
-            svgSrc: "assets/icons/Documents.svg",
+            svgSrc: "assets/icons/trans.svg",
             title: "Nombre de transaction",
             numOfOpr: nombreTransaction,
           ),
           StorageInfoCard(
-            svgSrc: "assets/icons/media.svg",
+            svgSrc: "assets/icons/renvers.svg",
             title: "Nombre de renversement",
             numOfOpr: 0,
           ),
           StorageInfoCard(
-            svgSrc: "assets/icons/folder.svg",
+            svgSrc: "assets/icons/drop_box.svg",
             title: "Montant total rechargé",
             numOfOpr: RechargeController.montantTotalRecharger,
           ),
           StorageInfoCard(
-            svgSrc: "assets/icons/unknown.svg",
+            svgSrc: "assets/icons/client.svg",
             title: "Nombre de clients",
             numOfOpr: 0,
           ),

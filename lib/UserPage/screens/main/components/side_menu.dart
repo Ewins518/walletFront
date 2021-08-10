@@ -1,4 +1,5 @@
 import 'package:apiproject/UserPage/controllers/MenuController.dart';
+import 'package:apiproject/UserPage/screens/payLink/link_screen.dart';
 import 'package:apiproject/UserPage/screens/renversement/renvers_screen.dart';
 import 'package:apiproject/UserPage/screens/settings/settings_screen.dart';
 import 'package:apiproject/UserPage/screens/transaction/transaction_screen.dart';
@@ -78,6 +79,26 @@ class SideMenu extends StatelessWidget {
                  ),
                     ),
                   );},
+          ),
+          DrawerListTile(
+            title: "Lien de paiment",
+            svgSrc: "assets/icons/menu_tran.svg",
+            press: () {
+                 Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                        MultiProvider(
+                      providers: [
+                       ChangeNotifierProvider(
+                         create: (context) => MenuController(),
+                       ),
+                     ],
+                  child: LinkScreen(),
+                 ),
+                    ),
+                  );
+            },
           ),
           DrawerListTile(
             title: "Documentation",

@@ -13,6 +13,7 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Row(
       children: [
         if (!Responsive.isDesktop(context))
@@ -41,6 +42,7 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool actif = true;
     return Container(
       margin: EdgeInsets.only(left: defaultPadding),
       padding: EdgeInsets.symmetric(
@@ -55,16 +57,15 @@ class ProfileCard extends StatelessWidget {
       child: Row(
         children: [
           Image.asset(
-            "assets/images/profile_pic.png",
+            actif ? "assets/images/actif.png" : "assets/images/inactif.png",
             height: 38,
           ),
           if (!Responsive.isMobile(context))
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child: Text("Angelina Joli"),
+              child: Text(actif ? "Compte actif" : "Compte inactif"),
             ),
-          Icon(Icons.keyboard_arrow_down),
         ],
       ),
     );
