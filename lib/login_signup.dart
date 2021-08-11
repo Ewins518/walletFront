@@ -22,7 +22,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
 
     
     return Scaffold(
-      backgroundColor: Palette.backgroundColor,
+      backgroundColor: bgColor.withOpacity(.95),
       body: Stack(
         children: [
           Positioned(
@@ -37,7 +37,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       fit: BoxFit.fill)),
               child: Container(
                 padding: EdgeInsets.only(top: 90, left: 20),
-                color: Color(0xFF3b5999).withOpacity(.85),
+                color: bgColor.withOpacity(.85),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -55,7 +55,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.yellow[700]
+                                color: Colors.redAccent
                               ),
                             ),
                           ]),
@@ -83,22 +83,22 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
           AnimatedPositioned(
             duration: Duration(milliseconds: 700),
             curve: Curves.bounceInOut,
-            top: isSignupScreen ? size.height * .25 : size.height * .3,
+            top: isSignupScreen ? size.height * .25 : size.height * .27,
             child: AnimatedContainer(
               duration: Duration(milliseconds: 700),
               curve: Curves.bounceInOut,
-              height: isSignupScreen ? size.height * .6 : size.height * .47,
+              height: isSignupScreen ? size.height * .47 : size.height * .47,
               padding: EdgeInsets.all(15),
               width: MediaQuery.of(context).size.width * .90,
               margin: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
-                  color: bgColor,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: [
                     BoxShadow(
                         color: Colors.black.withOpacity(0.3),
-                        blurRadius: 15,
-                        spreadRadius: 5),
+                        blurRadius: 20,
+                        spreadRadius: 50),
                   ]),
               child: SingleChildScrollView(
                 child: Column(
@@ -120,7 +120,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     color: !isSignupScreen
-                                        ? Colors.white
+                                        ? Palette.activeColor
                                         : Palette.textColor1),
                               ),
                               if (!isSignupScreen)
@@ -147,7 +147,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     color: isSignupScreen
-                                        ? Colors.white
+                                        ? Palette.activeColor
                                         : Palette.textColor1),
                               ),
                               if (isSignupScreen)
@@ -172,26 +172,33 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
           // Trick to add the submit button
           buildBottomHalfContainer(false),
           // Bottom buttons
-          /*  Positioned(
-            top: MediaQuery.of(context).size.height - 100,
+           Positioned(
+            top: MediaQuery.of(context).size.height - 90,
             right: 0,
             left: 0,
             child: Column(
               children: [
-                Text(isSignupScreen ? "S'inscrire avec" : "Se Connecter avec"),
+                Text(isSignupScreen ? "Ou s'inscrire avec " : "Ou se connecter avec",
+                 style: TextStyle(
+                       fontSize: 13,
+                       fontWeight: FontWeight.bold,
+                       color: Colors.white)
+                     ),
                 Container(
                   margin: EdgeInsets.only(right: 20, left: 20, top: 15),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      buildTextButton(MaterialCommunityIcons.facebook,
+                          "Facebook", Palette.facebookColor),
                       buildTextButton(MaterialCommunityIcons.google_plus,
-                          "Google", Palette.googleColor, context),
+                          "Google", Palette.googleColor),
                     ],
                   ),
                 )
               ],
             ),
-          ) */
+          )
         ],
       ),
     );
@@ -212,7 +219,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                 children: [
                   Checkbox(
                     value: isRememberMe,
-                    activeColor: Palette.textColor2,
+                    activeColor: Colors.black,
+                    autofocus: true,
                     onChanged: (value) {
                       setState(() {
                         isRememberMe = !isRememberMe;
@@ -240,107 +248,13 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       margin: EdgeInsets.only(top: 20),
       child: Column(
         children: [
-          buildTextField(MaterialCommunityIcons.account_outline, "User Name",
+          buildTextField(MaterialCommunityIcons.account_outline, "Nom et prénom",
               false, false),
           buildTextField(
               MaterialCommunityIcons.email_outline, "email", false, true),
           buildTextField(
               MaterialCommunityIcons.lock_outline, "password", true, false),
-          Padding(
-            padding: const EdgeInsets.only(top: 10, left: 10),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isMale = true;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        margin: EdgeInsets.only(right: 8),
-                        decoration: BoxDecoration(
-                            color: isMale
-                                ? Palette.textColor2
-                                : Colors.transparent,
-                            border: Border.all(
-                                width: 1,
-                                color: isMale
-                                    ? Colors.transparent
-                                    : Palette.textColor1),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Icon(
-                          MaterialCommunityIcons.account_outline,
-                          color: isMale ? Colors.white : Palette.iconColor,
-                        ),
-                      ),
-                      Text(
-                        "Male",
-                        style: TextStyle(color: Palette.textColor1),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isMale = false;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        margin: EdgeInsets.only(right: 8),
-                        decoration: BoxDecoration(
-                            color: isMale
-                                ? Colors.transparent
-                                : Palette.textColor2,
-                            border: Border.all(
-                                width: 1,
-                                color: isMale
-                                    ? Palette.textColor1
-                                    : Colors.transparent),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Icon(
-                          MaterialCommunityIcons.account_outline,
-                          color: isMale ? Palette.iconColor : Colors.white,
-                        ),
-                      ),
-                      Text(
-                        "Female",
-                        style: TextStyle(color: Palette.textColor1),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 200,
-            margin: EdgeInsets.only(top: 20),
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                  text: "By pressing 'Submit' you agree to our ",
-                  style: TextStyle(color: Palette.textColor2),
-                  children: [
-                    TextSpan(
-                      //recognizer: ,
-                      text: "term & conditions",
-                      style: TextStyle(color: Colors.orange),
-                    ),
-                  ]),
-            ),
-          ),
+          
         ],
       ),
     );
@@ -377,7 +291,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     return AnimatedPositioned(
       duration: Duration(milliseconds: 700),
       curve: Curves.bounceInOut,
-      top: isSignupScreen ? 535 : 430,
+      top: isSignupScreen ? 420 : 425,
       right: 0,
       left: 0,
       child: Center(

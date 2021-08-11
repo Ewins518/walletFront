@@ -32,7 +32,7 @@ class MyApp extends StatefulWidget{
       if(visitingFlag == true){
         //it is the case when the user is visiting for not first
         setState (() {
-        page = SocialPage();
+        page =  WellcomePage();
         });
         print("Inside affiche: true");
       }else {

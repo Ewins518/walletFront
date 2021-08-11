@@ -1,6 +1,8 @@
+import 'package:apiproject/login_signup.dart';
 import 'package:apiproject/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'UserPage/constants.dart';
 import 'delayed_animation.dart';
 import 'package:apiproject/social_page.dart';
 
@@ -8,7 +10,7 @@ class WellcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor:bgColor.withOpacity(.95),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.symmetric(
@@ -28,7 +30,7 @@ class WellcomePage extends StatelessWidget {
                     "BIENVENUE sur transfert d'argent rapide!!",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                      color: Colors.red[700],
+                      
                       fontSize: 16,
                     ),
                   ),
@@ -60,7 +62,7 @@ class WellcomePage extends StatelessWidget {
                     "Une solution rapide simple et fiable pour transferer de l'argent depuis n'importe où",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                      color: Colors.grey,
+                   
                       fontSize: 16,
                     ),
                   ),
@@ -78,11 +80,11 @@ class WellcomePage extends StatelessWidget {
                     ),
                     child: Text('Commencer'),
                     onPressed: () {
-                      Navigator.pushAndRemoveUntil(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SocialPage(),
-                        ),(route) => false
+                          builder: (context) => LoginSignupScreen (),
+                        )
                       );
                     },
                   ),
