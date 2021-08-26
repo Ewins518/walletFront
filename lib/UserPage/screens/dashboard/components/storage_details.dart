@@ -1,18 +1,31 @@
-import 'package:apiproject/UserPage/controllers/FieldController.dart';
 import 'package:apiproject/UserPage/controllers/TransController.dart';
+import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 import 'chart.dart';
 import 'storage_info_card.dart';
 
-class StarageDetails extends StatelessWidget {
+class StarageDetails extends StatefulWidget {
   const StarageDetails({
     Key? key,
   }) : super(key: key);
 
   @override
+  _StarageDetailsState createState() => _StarageDetailsState();
+}
+
+
+class _StarageDetailsState extends State<StarageDetails> {
+
+  @override
+void initState(){
+  init ();
+  super.initState();
+}
+  @override
   Widget build(BuildContext context) {
+    int mtr = montantTotalRecharge!;
     return Container(
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
@@ -44,7 +57,7 @@ class StarageDetails extends StatelessWidget {
           StorageInfoCard(
             svgSrc: "assets/icons/drop_box.svg",
             title: "Montant total rechargé",
-            numOfOpr: RechargeController.montantTotalRecharger,
+            numOfOpr: mtr,
           ),
           StorageInfoCard(
             svgSrc: "assets/icons/client.svg",

@@ -1,4 +1,5 @@
 import 'package:apiproject/UserPage/controllers/FieldController.dart';
+import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
@@ -14,10 +15,22 @@ class _MyRefState extends State<MyRef> {
   bool confirmer = false;
   TextEditingController _numberController = TextEditingController();
   TextEditingController _montantController = TextEditingController();
-  Map<String, String> data = {};
-  RechargeController ? rcg ;
+   final _globalKey = GlobalKey<FormState>();
+  String ? rcg ;
    int _index = 0;
     
+void dispose() {
+    // Clean up the controller when the widget is disposed.
+  _montantController.dispose(); 
+   _numberController.dispose();
+    super.dispose();
+  }
+
+@override
+void initState(){
+  init ();
+  super.initState();
+}
   @override
   Widget build(BuildContext context) {
    final Size _size = MediaQuery.of(context).size;
@@ -48,45 +61,7 @@ class _MyRefState extends State<MyRef> {
     );
     
   }
-
-  Future<Null> recharger() async {
-   
-     return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context){
-        return new AlertDialog(
-          scrollable: true,
-          backgroundColor: Colors.white,
-          title:new Text("Récharger compte", textScaleFactor: 1, style: TextStyle(color: Colors.black),),
-          content: buildCard(),
-          
-        );
-      }
-     );
-  }
-
-  List<Step> _mySteps(){
-    List<Step> _steps = [
-      Step(
-        title: Text(""),
-        content: buildTextField( "Numéro de recharge", _numberController ),
-        isActive: _index >= 0,
-      ),
-      Step(
-        title: Text(""),
-        content:  buildTextField( "Montant", _montantController),
-        isActive: _index >= 1,
-      ),
-       Step(
-        title: Text(""),
-        content: Text("En attente de confirmation", style: TextStyle(color: Colors.black)),
-        isActive: _index >= 2,
-      )
-    ];
-    return _steps;
-  }
-
+  
   Future <Null> recharge() async {
     return showDialog(
       context: context,
@@ -100,16 +75,19 @@ class _MyRefState extends State<MyRef> {
             width: 100,
             height: 120,
                margin: EdgeInsets.only(top: 20),
-               child: Column(
-                   children: [
-                     buildTextField( "Number", _numberController ),
+               child: Form(
+                 key: _globalKey,
+                 child: Column(
+                     children: [
+                       buildTextField( "Number", true,_numberController ),
+                       
+                       buildTextField( "Montant",false, _montantController),
                      
-                     buildTextField( "Montant", _montantController),
-                   
-                      Row(
+                        Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,),
               ],
           ),
+               ),
           ),
           contentPadding: EdgeInsets.all(10),
           actions: <Widget> [
@@ -125,22 +103,21 @@ class _MyRefState extends State<MyRef> {
                   new FlatButton(
 
                  onPressed: (){
-                   
-                  data = {
-                          "noTel": _numberController.text,
-                          "montant": _montantController.text,
-                          };  
+                  if(_globalKey.currentState!.validate()){
+                   Map<String,String> data = {
+                          "phone": _numberController.text.trim(),
+                          "montant": _montantController.text.trim(),
+                          
+                          };
                        
-                   setState((){
-                      solde += int.parse(_montantController.text); 
-                      RechargeController.montantTotalRecharger  += int.parse(_montantController.text) ;
-                       rcg = RechargeController(data);
-                       rcg!.refresh();
-                      _montantController.clear(); 
-                      _numberController.clear();
+                   setState(() async{
+                  
+                       rcg = await RechargeController(data).init();
+                       
                        Navigator.pop(context);    
-                   });   
-           
+                   });  
+                   dialog("Récharger compte", rcg!); 
+                  }
                  },
                  child: new Text(
                    "Continuer",
@@ -153,31 +130,12 @@ class _MyRefState extends State<MyRef> {
     );
   }
 
-  Widget buildCard(){
-    return Container(
-    width: 200,
-    height: 200,
-    child: Column(
-      children: [
-        Expanded(
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            color: Colors.pink,
-            elevation: 10,
-            child: buildStepper(),
-            ),
-        ),
-      ],
-    ),
-      );
-  }
 
-  Widget buildTextField( String hintText, TextEditingController _edit) {
+
+  Widget buildTextField( String hintText, bool phone, TextEditingController _edit) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: TextField(
+      child: TextFormField(
        autofocus: false ,
        controller: _edit,
         style: TextStyle(color: Colors.black),
@@ -195,60 +153,49 @@ class _MyRefState extends State<MyRef> {
           hintText: hintText,
           hintStyle: TextStyle(fontSize: 14, color: Palette.textColor1),
         ),
+        validator: (value){
+         if(phone){
+           if(value!.isEmpty)
+              return "Phone Number can't be empty";
+            else if(value.length != 8)
+              return "Enter a valide number";
+          return null;
+         }else {
+           
+             if(value!.isEmpty)
+            return "Montant can't be empty";
+
+          return null;
+           }
+        }
       ),
     );
   }
 
-Widget buildStepper( ){
-  return Stepper(
-      controlsBuilder:
-            (BuildContext context, { VoidCallback? onStepContinue, VoidCallback? onStepCancel }) {
-               return Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: <Widget>[
-                   
-                 TextButton(
-                   onPressed: onStepCancel,
-                   child: const Text(
-                     'Annuler',
-                     style: TextStyle(color: Colors.red)
-                     ),
-                 ),
-                 
-                 TextButton(
-                     onPressed: onStepContinue,
-                     child: const Text(
-                       'suivant',
-                       style: TextStyle(color: Colors.green)
-                       ),
-            ),
-          ],
-        );
-      },
-      type: StepperType.horizontal,
-      steps: _mySteps(), 
-     currentStep: _index,
-     onStepContinue: () {
-       if(_index < _mySteps().length -1)
-        setState((){
-        _index++ ;
-      });
-        else {
-           //logic if everything is ok            
-        }
-     },
-     onStepCancel: () {               
-         if(_index > 0)
-         setState((){
-        _index-- ;
-      });
-        else {
-            _index = 0;
-          Navigator.pop(context);             
-        }
-      
-     },
-  );
+Future<Null> dialog(String title, String desc) async {
+  return showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return new SimpleDialog(
+        title: new Text(title, textScaleFactor: 1.4,),
+        contentPadding: EdgeInsets.all(25.0),
+        children: <Widget>[
+          new Text(desc),
+          new Container(height: 20.0,),
+          new RaisedButton(
+            color: Colors.teal,
+            textColor: Colors.white,
+            child: new Text('OK'),
+            onPressed: () {
+              Navigator.pop(context);
+            }
+            
+            )
+        ],
+      );
+    }
+  ); 
 }
 
 }

@@ -1,7 +1,8 @@
-import 'package:apiproject/UserPage/controllers/FieldController.dart';
-import 'package:apiproject/UserPage/controllers/TransController.dart';
+import 'package:apiproject/UserPage/controllers/linkController.dart';
+import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import '../../../constants.dart';
 
 class AddLink extends StatefulWidget {
@@ -11,11 +12,26 @@ class AddLink extends StatefulWidget {
 }
 
 class _AddLinkState extends State<AddLink> {
-  TextEditingController _numberController = TextEditingController();
-  TextEditingController _numberController1 = TextEditingController();
+  TextEditingController _descController = TextEditingController();
+ final _globalKey = GlobalKey<FormState>();
    TextEditingController _montantController = TextEditingController();
-   Map<String, String> data = {};
-  TransController ? trans ;
+  String ? result;
+  LinkController ? link ;
+  String ? email1;
+  bool linkOk = false;
+
+void dispose() {
+    // Clean up the controller when the widget is disposed.
+  _montantController.dispose(); 
+   _descController.dispose();
+    super.dispose();
+  }
+
+@override
+void initState(){
+  init ();
+  super.initState();
+}
   @override
   Widget build(BuildContext context) {
     //final Size _size = MediaQuery.of(context).size;
@@ -25,7 +41,7 @@ class _AddLinkState extends State<AddLink> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Solde: $solde",
+              "Solde: $solde f",
               style: Theme.of(context).textTheme.subtitle1,
             ),
             if(!Responsive.isMobile(context))
@@ -81,19 +97,22 @@ class _AddLinkState extends State<AddLink> {
             width: 110,
             height: 180,
                margin: EdgeInsets.only(top: 20),
-               child: SingleChildScrollView(
-                 child:
-                   Column(
+               child: Form(
+                 key: _globalKey,
+                 child: SingleChildScrollView(
+                   child:
+                     Column(
               
-                       children: [
-                         buildTextField( "Description", true, _numberController),
+                         children: [
+                           buildTextField( "Description", true, true, _descController),
+                           
+                           buildTextField( "Montant", false, false, _montantController),
                          
-                         buildTextField( "Montant", false, _montantController),
-                       
-                          Row(
+                            Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,),
               ],
           ),
+                 ),
                ),
                ),
           contentPadding: EdgeInsets.all(10),
@@ -109,27 +128,34 @@ class _AddLinkState extends State<AddLink> {
                ),
                   new FlatButton(
                  onPressed: (){
-
+                   if(_globalKey.currentState!.validate()){
                     Map<String,String> data = {
-                          "desc": _numberController.text,
+                          "desc": _descController.text,
                           "montant": _montantController.text,
                           };  
-                    setState((){
-                    recu = false;
-                    solde -= int.parse(_montantController.text); 
-                    trans = TransController(data);
-                    trans!.refresh();
-                    _numberController.clear();
-                    _montantController.clear();
+                    setState(() async {
+                    
+                    result = await LinkController(data).init();
+                    email1 = await getEmail();
+
+                    final Email email = Email(
+                      body: "Un nouveau lien de paiement vous a été envoyé. $result",
+                      subject: "Lien de paiment",
+                      recipients: [email1!],
+                      isHTML: false,
+             );
+
+                   await FlutterEmailSender.send(email);
                      Navigator.pop(context);
                     });
                        //   print(data);
-                  
+                   }
                  },
                  child: new Text(
-                   "Continuer",
+                   "continuer",
                     style: new TextStyle(color: Colors.green)
                     ),
+                    
                )
           ],
         );
@@ -137,10 +163,10 @@ class _AddLinkState extends State<AddLink> {
     );
   }
 
-  Widget buildTextField( String hintText, bool text, TextEditingController _edit) {
+  Widget buildTextField( String hintText, bool text, bool description, TextEditingController _edit) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: TextField(
+      child: TextFormField(
         controller: _edit,
         style: TextStyle(color: Colors.black),
         keyboardType: text ? TextInputType.text : TextInputType.number,
@@ -157,6 +183,20 @@ class _AddLinkState extends State<AddLink> {
           hintText: hintText,
           hintStyle: TextStyle(fontSize: 14, color: Palette.textColor1),
         ),
+        validator: (value){
+         if(description){
+           if(value!.isEmpty)
+              return "Description can't be empty";
+
+          return null;
+         }else {
+           
+             if(value!.isEmpty)
+            return "Montant can't be empty";
+
+          return null;
+           }
+        }
       ),
     );
   }

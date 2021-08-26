@@ -1,4 +1,5 @@
 
+import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
@@ -9,7 +10,19 @@ import 'components/my_fields.dart';
 import 'components/recent_operation.dart';
 import 'components/storage_details.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+
+@override
+void initState(){
+  init ();
+  super.initState();
+}
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

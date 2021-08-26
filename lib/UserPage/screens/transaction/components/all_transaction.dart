@@ -32,7 +32,7 @@ class AllTransaction extends StatelessWidget {
               minWidth: 600,
               columns: [
                 DataColumn(
-                  label: Text("No compte"),
+                  label: Text("Client"),
                 ),
                 DataColumn(
                   label: Text("Date"),

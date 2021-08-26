@@ -1,4 +1,5 @@
 import 'package:apiproject/UserPage/controllers/MenuController.dart';
+import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +7,19 @@ import 'package:provider/provider.dart';
 import '../../responsive.dart';
 import 'components/side_menu.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+
+
+@override
+void initState(){
+  init ();
+  super.initState();
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:apiproject/networkHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
 import 'UserPage/constants.dart';
@@ -12,9 +16,32 @@ class LoginSignupScreen extends StatefulWidget {
 }
 
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
+  final loginEmailController = TextEditingController();
+  final loginPasswordController = TextEditingController();
+  final registrationEmailController = TextEditingController();
+  final registrationPasswordController = TextEditingController();
+  final registrationUserController = TextEditingController();
   bool isSignupScreen = true;
-  bool isMale = true;
+  final _globalKey = GlobalKey<FormState>();
+  NetworkHandler networkHandler = NetworkHandler();
+  final storage = new FlutterSecureStorage();
+  
   bool isRememberMe = false;
+  bool validate = false;
+  bool circular = false;
+  String errorText = "" ;
+
+@override
+void dispose() {
+    // Clean up the controller when the widget is disposed.
+    loginEmailController.dispose();
+    loginPasswordController.dispose();
+    registrationEmailController.dispose();
+    registrationPasswordController.dispose();
+    registrationUserController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -207,38 +234,41 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   Container buildSigninSection() {
     return Container(
       margin: EdgeInsets.only(top: 20),
-      child: Column(
-        children: [
-          buildTextField(Icons.mail_outline, "info@demouri.com", false, true),
-          buildTextField(
-              MaterialCommunityIcons.lock_outline, "**********", true, false),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Checkbox(
-                    value: isRememberMe,
-                    activeColor: Colors.black,
-                    autofocus: true,
-                    onChanged: (value) {
-                      setState(() {
-                        isRememberMe = !isRememberMe;
-                      });
-                    },
-                  ),
-                  Text("Remember me",
-                      style: TextStyle(fontSize: 12, color: Palette.textColor1))
-                ],
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Text("Forgot Password?",
-                    style: TextStyle(fontSize: 12, color: Palette.textColor1)),
-              )
-            ],
-          )
-        ],
+      child: Form(
+         key: _globalKey,
+        child: Column(
+          children: [
+            buildTextField(Icons.mail_outline, "info@demouri.com", false, true, false, loginEmailController),
+            buildTextField(
+                MaterialCommunityIcons.lock_outline, "**********", true, false, false, loginPasswordController),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Checkbox(
+                      value: isRememberMe,
+                      activeColor: Colors.black,
+                      autofocus: true,
+                      onChanged: (value) {
+                        setState(() {
+                          isRememberMe = !isRememberMe;
+                        });
+                      },
+                    ),
+                    Text("Remember me",
+                        style: TextStyle(fontSize: 12, color: Palette.textColor1))
+                  ],
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: Text("Forgot Password?",
+                      style: TextStyle(fontSize: 12, color: Palette.textColor1)),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -246,16 +276,19 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   Container buildSignupSection() {
     return Container(
       margin: EdgeInsets.only(top: 20),
-      child: Column(
-        children: [
-          buildTextField(MaterialCommunityIcons.account_outline, "Nom et prénom",
-              false, false),
-          buildTextField(
-              MaterialCommunityIcons.email_outline, "email", false, true),
-          buildTextField(
-              MaterialCommunityIcons.lock_outline, "password", true, false),
-          
-        ],
+      child: Form(
+        key: _globalKey,
+        child: Column(
+          children: [
+            buildTextField(MaterialCommunityIcons.account_outline, "Nom et prénom",
+                false, false, true, registrationUserController),
+            buildTextField(
+                MaterialCommunityIcons.email_outline, "email", false, true, false, registrationEmailController),
+            buildTextField(
+                MaterialCommunityIcons.lock_outline, "password", true, false, false, registrationPasswordController),
+            
+          ],
+        ),
       ),
     );
   }
@@ -333,7 +366,25 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   ),
 
                   onTap: () async {
-                     Navigator.pushReplacement(
+
+                    if (!isSignupScreen) {
+                      if(_globalKey.currentState!.validate()){
+                       Map<String,String> data = {
+                          "email": loginEmailController.text.trim(),
+                          "password": loginPasswordController.text.trim(),
+                          };   
+                          var response =  await networkHandler.post("/user/login",data);
+                         
+                          if(response.statusCode == 200 || response.statusCode == 201){
+                            Map<String, dynamic> output = json.decode(response.body);
+                            print(output['token']);
+                            await storage.write(key: "token", value: output['token']);
+
+                             setState(() {
+                              validate = true;
+                              circular = false;
+                            });
+                            Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                       builder: (context) =>
@@ -347,7 +398,89 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                  ),
                 ),
                 );
-                },
+                    } else if (response.statusCode == 401) {
+
+                       setState(() {
+                              Map<String, dynamic> output = json.decode(response.body);
+                              validate = false;
+                              print(output['error']);
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(output['error'])));
+                               errorText = output['error'];
+                              circular = false;
+                            }); 
+                     }
+                    else{
+                            setState(() {
+                              String output = json.decode(response.body);
+                              validate = false;
+                              errorText = output;
+                              circular = false;
+                            });
+                          }
+                  } 
+                }
+                  else {
+                    
+                 if(_globalKey.currentState!.validate()){
+                      Map<String,String> data = {
+                          "name": registrationUserController.text.trim(),
+                          "email": registrationEmailController.text.trim(),
+                          "password": registrationPasswordController.text.trim(),
+                          };   
+                          print(data);
+                          var responseRegister =  await networkHandler.post("/user/register",data);
+                         //login logic add here
+                        if(responseRegister.statusCode == 200 || responseRegister.statusCode == 201){
+                           
+                           Map<String,String> data1 = {
+                          "email": registrationEmailController.text.trim(),
+                          "password": registrationPasswordController.text.trim(),
+                          }; 
+                        
+                        var response = await networkHandler.post("/user/login",data1);
+
+                        if(response.statusCode == 200 || response.statusCode == 201){
+                                    
+                            Map<String, dynamic> output = json.decode(response.body);
+                            print(output['token']);
+                            await storage.write(key: "token", value: output['token']);
+                            setState(() {
+                              validate = true;
+                              circular = false;
+                            });
+
+                                   Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                  MultiProvider(
+                                  providers: [
+                                   ChangeNotifierProvider(
+                                     create: (context) => MenuController(),
+                                   ),
+                            ],
+                          child: MainScreen(),
+                       ),
+                      ),
+                      );
+                     }
+                     else if (response.statusCode == 403) {
+
+                       setState(() {
+                              Map<String, dynamic> output = json.decode(response.body);
+                              validate = false;
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(output['error'])));
+                               errorText = output['error'];
+                              circular = false;
+                            }); 
+                     }
+                      else
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Network Error")));
+                          
+                   }
+                 }
+                }
+              },
               )
                 
               : Center(),
@@ -356,13 +489,86 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     );
   }
 
-  Widget buildTextField(
-      IconData icon, String hintText, bool isPassword, bool isEmail) {
+checkUser() async {
+    if(registrationUserController.text.length==0) {
+      setState(() {
+        circular=false;
+        validate=false;
+        errorText="Le nom d'utilisateur ne peut être vide";
+      });
+    }
+    else if(registrationUserController.text.split(' ').length < 2){
+       setState(() {
+        circular=false;
+        validate=false;
+        errorText="Nom et prénom svp";
+      });
+    }
+     else {
+         setState(() {
+        //circular=false;
+        validate=true;
+        
+      });
+    }
+}
+
+checkEmailPassword(String ? value, String field){
+  if(value!.isEmpty)
+    return "$field can't be empty";
+  
+  if(field == "Password"){
+
+    if(value.length < 7)
+      return "Password lenght must >= 7";
+  }
+  
+  else {
+    if(!value.contains("@"))
+        return "Email is invalide";
+  }
+
+  return null;
+}
+
+  Widget buildTextField( IconData icon, String hintText, bool isPassword,
+   bool isEmail, bool isName, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: TextField(
+      child: TextFormField(
         obscureText: isPassword,
-        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+        controller: controller,
+        style: TextStyle(color: Colors.black),
+       keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+       validator: (value){
+         if(isName){
+           if(value!.isEmpty)
+              return "Le nom d'utilisateur ne peut être vide";
+
+            else if(value.split(' ').length < 2)
+              return   "Nom et prénom svp";
+
+            return null;
+         }else {
+           if(isEmail){
+             if(value!.isEmpty)
+            return "Email can't be empty";
+
+          if(!value.contains("@"))
+            return "Email is invalide";
+
+          return null;
+           }
+           else {
+             if(value!.isEmpty)
+            return "Password can't be empty";
+          
+          if(value.length < 7)
+            return "Password lenght must >= 7";
+          return null;
+           }
+         }
+       },
         decoration: InputDecoration(
           prefixIcon: Icon(
             icon,
@@ -379,6 +585,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
           contentPadding: EdgeInsets.all(10),
           hintText: hintText,
           hintStyle: TextStyle(fontSize: 14, color: Palette.textColor1),
+         
         ),
       ),
     );

@@ -1,13 +1,26 @@
 import 'package:apiproject/UserPage/controllers/FieldController.dart';
+import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
-class Chart extends StatelessWidget {
+class Chart extends StatefulWidget {
   const Chart({
     Key? key,
   }) : super(key: key);
+
+  @override
+  _ChartState createState() => _ChartState();
+}
+
+class _ChartState extends State<Chart> {
+
+@override
+void initState(){
+  init ();
+  super.initState();
+}
 
   @override
   Widget build(BuildContext context) {

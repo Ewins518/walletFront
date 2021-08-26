@@ -1,4 +1,5 @@
-import 'package:apiproject/UserPage/controllers/FieldController.dart';
+import 'package:apiproject/UserPage/controllers/renversController.dart';
+import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
@@ -12,6 +13,20 @@ class AskRenvers extends StatefulWidget {
 class _AskRenversState extends State<AskRenvers> {
   TextEditingController _numberController = TextEditingController();
     TextEditingController _montantController = TextEditingController();
+      final _globalKey = GlobalKey<FormState>();
+        String ? rvsm;
+        @override
+      void dispose() {
+    // Clean up the controller when the widget is disposed.
+  _montantController.dispose(); 
+   _numberController.dispose();
+    super.dispose();
+  }
+    @override
+void initState(){
+  init ();
+  super.initState();
+}
   @override
   Widget build(BuildContext context) {
     //final Size _size = MediaQuery.of(context).size;
@@ -21,7 +36,7 @@ class _AskRenversState extends State<AskRenvers> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Solde: $solde",
+              "Solde: $solde f",
               style: Theme.of(context).textTheme.subtitle1,
             ),
             if(!Responsive.isMobile(context))
@@ -77,19 +92,22 @@ class _AskRenversState extends State<AskRenvers> {
             width: 110,
             height: 150,
                margin: EdgeInsets.only(top: 20),
-               child: SingleChildScrollView(
-                 child:
-                   Column(
+               child: Form(
+                 key: _globalKey,
+                 child: SingleChildScrollView(
+                   child:
+                     Column(
               
-                       children: [
-                         buildTextField( "No Téléphone", false, _numberController),
+                         children: [
+                           buildTextField( "No Téléphone", false, true,_numberController),
+                           
+                           buildTextField( "Montant", false, false,_montantController),
                          
-                         buildTextField( "Montant", false, _montantController),
-                       
-                          Row(
+                            Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,),
               ],
           ),
+                 ),
                ),
                ),
           contentPadding: EdgeInsets.all(10),
@@ -104,14 +122,19 @@ class _AskRenversState extends State<AskRenvers> {
                     ),
                ),
                   new FlatButton(
-                 onPressed: (){
+                 onPressed: () async {
+
+                   if(_globalKey.currentState!.validate()){
                     Map<String,String> data = {
                           "noTel": _numberController.text,
                           "montant": _montantController.text,
                           };  
 
-                          print(data);
+                       rvsm = await RenversementController(data).init();
+                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(rvsm!)));
+
                    Navigator.pop(context);
+                 }
                  },
                  child: new Text(
                    "Continuer",
@@ -124,10 +147,10 @@ class _AskRenversState extends State<AskRenvers> {
     );
   }
 
-  Widget buildTextField( String hintText, bool text, TextEditingController _edit) {
+  Widget buildTextField( String hintText, bool text, bool phone, TextEditingController _edit) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: TextField(
+      child: TextFormField(
         controller: _edit,
         style: TextStyle(color: Colors.black),
         keyboardType: text ? TextInputType.text : TextInputType.number,
@@ -144,6 +167,16 @@ class _AskRenversState extends State<AskRenvers> {
           hintText: hintText,
           hintStyle: TextStyle(fontSize: 14, color: Palette.textColor1),
         ),
+          validator: (value) {
+            if(phone){
+              if(value!.isEmpty)
+                return "Entrer le numéro de téléphone";
+            }
+            else{
+             if(value!.isEmpty)
+                return "Entrer le montant"; 
+            }
+          }
       ),
     );
   }

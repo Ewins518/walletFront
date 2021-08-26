@@ -32,7 +32,7 @@ class AllLinkInfo extends StatelessWidget {
               minWidth: 600,
               columns: [
                 DataColumn(
-                  label: Text("Description"),
+                  label: Text("Client"),
                 ),
                 DataColumn(
                   label: Text("Date"),
@@ -41,7 +41,7 @@ class AllLinkInfo extends StatelessWidget {
                   label: Text("Montant"),
                 ),
                  DataColumn(
-                  label: Text("Etat"),
+                  label: Text("Description"),
                 ),
               ],
               rows:  List.generate(

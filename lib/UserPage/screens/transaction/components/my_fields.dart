@@ -1,5 +1,6 @@
 import 'package:apiproject/UserPage/controllers/FieldController.dart';
 import 'package:apiproject/UserPage/controllers/TransController.dart';
+import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
@@ -12,10 +13,25 @@ class AddTransaction extends StatefulWidget {
 
 class _AddTransactionState extends State<AddTransaction> {
   TextEditingController _numberController = TextEditingController();
-  TextEditingController _numberController1 = TextEditingController();
+  //TextEditingController _numberController1 = TextEditingController();
    TextEditingController _montantController = TextEditingController();
    Map<String, String> data = {};
   TransController ? trans ;
+  final _globalKey = GlobalKey<FormState>();
+        String ? transaction;
+
+        @override
+   void dispose() {
+    // Clean up the controller when the widget is disposed.
+  _montantController.dispose(); 
+   _numberController.dispose();
+    super.dispose();
+  }
+  @override
+void initState(){
+  init ();
+  super.initState();
+}
   @override
   Widget build(BuildContext context) {
     //final Size _size = MediaQuery.of(context).size;
@@ -25,7 +41,7 @@ class _AddTransactionState extends State<AddTransaction> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Solde: $solde",
+              "Solde: $solde f",
               style: Theme.of(context).textTheme.subtitle1,
             ),
             if(!Responsive.isMobile(context))
@@ -81,20 +97,23 @@ class _AddTransactionState extends State<AddTransaction> {
             width: 110,
             height: 180,
                margin: EdgeInsets.only(top: 20),
-               child: SingleChildScrollView(
-                 child:
-                   Column(
+               child: Form(
+                 key: _globalKey,
+                 child: SingleChildScrollView(
+                   child:
+                     Column(
               
-                       children: [
-                         buildTextField( "No Compte", true, _numberController),
-                         buildTextField( "Confirm No Compte", true, _numberController1),
+                         children: [
+                           buildTextField( "No Compte", true, _numberController),
+                          // buildTextField( "Confirm No Compte", true, _numberController1),
+                           
+                           buildTextField( "Montant", false, _montantController),
                          
-                         buildTextField( "Montant", false, _montantController),
-                       
-                          Row(
+                            Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,),
               ],
           ),
+                 ),
                ),
                ),
           contentPadding: EdgeInsets.all(10),
@@ -115,15 +134,12 @@ class _AddTransactionState extends State<AddTransaction> {
                           "noCompte": _numberController.text,
                           "montant": _montantController.text,
                           };  
-                    setState((){
-                    recu = false;
-                    solde -= int.parse(_montantController.text); 
-                    nombreTransaction +=1  ;
-                    trans = TransController(data);
-                    trans!.refresh();
-                    _numberController.clear();
-                    _numberController1.clear();
-                    _montantController.clear();
+                    setState(() async {
+                     
+                    transaction = await TransController(data).init();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(transaction!)));
+
+                    
                      Navigator.pop(context);
                     });
                        //   print(data);
@@ -143,7 +159,7 @@ class _AddTransactionState extends State<AddTransaction> {
   Widget buildTextField( String hintText, bool text, TextEditingController _edit) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: TextField(
+      child: TextFormField(
         controller: _edit,
         style: TextStyle(color: Colors.black),
         keyboardType: text ? TextInputType.text : TextInputType.number,
@@ -160,6 +176,16 @@ class _AddTransactionState extends State<AddTransaction> {
           hintText: hintText,
           hintStyle: TextStyle(fontSize: 14, color: Palette.textColor1),
         ),
+        validator: (value) {
+            if(text){
+              if(value!.isEmpty)
+                return "Entrer le numéro de compte";
+            }
+            else{
+             if(value!.isEmpty)
+                return "Entrer le montant"; 
+            }
+          }
       ),
     );
   }

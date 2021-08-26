@@ -1,41 +1,46 @@
+import 'dart:convert';
+
 import 'package:apiproject/UserPage/models/RecentOperation.dart';
+import 'package:apiproject/networkHandler.dart';
 
 class TransController {
 static  int _solde = 100, nombreTransaction = 0;
-int ? _montant;
+String? _montant;
 String ? _noCompte;
 static bool _recu = true;
+NetworkHandler networkHandler = NetworkHandler();
 
-TransController(dynamic map){
+TransController(Map map){
 
-    this._montant = int.parse(map["montant"]);
+    this._montant = map["montant"];
     this._noCompte = map["noCompte"];
 
   }
 
-  Map init() {
-  var map = new Map<String, dynamic>();
-   //control here
-   if(numCorrect()){
-     setSolde();
-   }
-    map["noCompte"] = _noCompte;
-    map["montant"] = _montant;
-   
-    return map;
+  Future<String> init() async{
+  var map = new Map<String, String>();
+  
+    map["noCompte"] = _noCompte!;
+    map["montant"] = _montant!;
+
+    var responseTransaction =  await networkHandler.post("/user/transaction",map);
+     //Transaction logic add here
+     Map<String, dynamic> output = json.decode(responseTransaction.body);
+
+    if(responseTransaction.statusCode == 200 || responseTransaction.statusCode == 201){
+        
+        return output['message'];
+    }
+
+    return output['error'];
+ 
   }
 
   void refresh(){
     demoTransaction.add(RecentOpr(
       noCompte: _noCompte,
       date: DateTime.now(),
-      montant: _montant,
-      nature: recu ? "Réçu" : "Envoyé" ));
-      
-      demoRecentOpr.add(RecentOpr(
-      noCompte: _noCompte,
-      date: DateTime.now(),
-      montant: _montant,
+      montant: int.parse(_montant!),
       nature: recu ? "Réçu" : "Envoyé" ));
   }
 
@@ -43,14 +48,6 @@ TransController(dynamic map){
     if(_noCompte!.length == 8)
       return true;
     return false;
-  }
-
-  void setSolde(){
-    TransController._solde += _montant!; 
-  }
-
-  void debiterCompte(){
-    TransController._solde -= _montant!;
   }
 
 }

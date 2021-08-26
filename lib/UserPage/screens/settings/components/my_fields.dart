@@ -1,3 +1,4 @@
+import 'package:apiproject/UserPage/controllers/AddMomoController.dart';
 import 'package:apiproject/UserPage/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
@@ -10,7 +11,15 @@ class AddAccount extends StatefulWidget {
 
 class _AddAccountState extends State<AddAccount> {
     TextEditingController _numberController = TextEditingController();
-    TextEditingController _networkController = TextEditingController();
+    //TextEditingController _networkController = TextEditingController();
+    final _globalKey = GlobalKey<FormState>();
+      String ? addmm;
+  @override
+    void dispose() {
+    // Clean up the controller when the widget is disposed.
+   _numberController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,19 +86,21 @@ class _AddAccountState extends State<AddAccount> {
             width: 110,
             height: 150,
                margin: EdgeInsets.only(top: 20),
-               child: SingleChildScrollView(
-                 child:
-                   Column(
+               child: Form(
+                 key: _globalKey,
+                 child: SingleChildScrollView(
+                   child:
+                     Column(
               
-                       children: [
-                         buildTextField( "No Téléphone", false, _numberController),
+                         children: [
+                           buildTextField( "No Téléphone", false, _numberController),
+                           
                          
-                         buildTextField( "Réseau", true,_networkController),
-                       
-                          Row(
+                            Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,),
               ],
           ),
+                 ),
                ),
                ),
           contentPadding: EdgeInsets.all(10),
@@ -104,15 +115,20 @@ class _AddAccountState extends State<AddAccount> {
                     ),
                ),
                   new FlatButton(
-                 onPressed: (){
-
+                 onPressed: () {
+                  
+                  if(_globalKey.currentState!.validate()){
                     Map<String,String> data = {
-                          "noTel": _numberController.text,
-                          "network": _networkController.text,
+                          "noTel": _numberController.text
                           };  
+                  setState(()async {
+                     addmm =await AddMomoController(data).init();
+                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(addmm!)));
 
-                          print(data);
                    Navigator.pop(context);
+                  });
+                 
+                  }
                  },
                  child: new Text(
                    "Continuer",
@@ -128,7 +144,7 @@ class _AddAccountState extends State<AddAccount> {
   Widget buildTextField( String hintText, bool text, TextEditingController _edit) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: TextField(
+      child: TextFormField(
         controller: _edit,
         style: TextStyle(color: Colors.black),
         keyboardType: text ? TextInputType.text : TextInputType.number,
@@ -145,6 +161,12 @@ class _AddAccountState extends State<AddAccount> {
           hintText: hintText,
           hintStyle: TextStyle(fontSize: 14, color: Palette.textColor1),
         ),
+         validator: (value) {
+            
+              if(value!.isEmpty)
+                return "Entrer le numéro de téléphone";
+            
+          }
       ),
     );
   }

@@ -32,7 +32,7 @@ class RecentOperation extends StatelessWidget {
               minWidth: 600,
               columns: [
                 DataColumn(
-                  label: Text("NoCompte/Tel"),
+                  label: Text("Client"),
                 ),
                 DataColumn(
                   label: Text("Date"),

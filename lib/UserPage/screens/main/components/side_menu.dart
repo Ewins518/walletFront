@@ -20,7 +20,21 @@ class SideMenu extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            child: Image.asset("assets/images/img.png"),
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  
+                  Text("UltraPay",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red[900]
+                      ),
+                    ),
+                  Image.asset("assets/images/img.png"),
+                ],
+              )),
           ),
           DrawerListTile(
             title: "Dashbord",
