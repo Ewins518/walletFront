@@ -24,7 +24,7 @@ LinkController(Map map){
     map["montant"] = _montant.toString();
       print(map);
 
-    var responseRecharge =  await networkHandler.post("/user/paymentlink",map);
+    var responseRecharge =  await networkHandler.post("/link/paymentlink",map);
      //recharge logic add here
      Map<String, dynamic> output = json.decode(responseRecharge.body);
 
@@ -35,14 +35,6 @@ LinkController(Map map){
 
     return output['msg'];
  
-  }
-
- void refresh(){
-    demoRecentOpr.add(RecentOpr(
-      noCompte: _desc,
-      date: DateTime.now(),
-      montant: _montant,
-       ));
   }
 
 }

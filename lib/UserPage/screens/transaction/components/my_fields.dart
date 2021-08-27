@@ -30,6 +30,7 @@ class _AddTransactionState extends State<AddTransaction> {
   @override
 void initState(){
   init ();
+  initTransaction();
   super.initState();
 }
   @override

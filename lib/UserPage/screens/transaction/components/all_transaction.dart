@@ -1,3 +1,4 @@
+import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/models/RecentOperation.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
@@ -45,8 +46,8 @@ class AllTransaction extends StatelessWidget {
                 ),
               ],
               rows:  List.generate(
-                demoTransaction.length,
-                (index) => recentOprDataRow(demoTransaction[index]),
+                transaction.length,
+                (index) => recentOprDataRow(transaction[index]),
               ),
             ),
           ),
@@ -60,8 +61,8 @@ DataRow recentOprDataRow(RecentOpr fileInfo) {
   int montant = fileInfo.montant!;
   return DataRow(
     cells: [
-      DataCell(Text(fileInfo.noCompte!)),
-      DataCell(Text(fileInfo.date!.toString())),
+      DataCell(Text(fileInfo.username!)),
+      DataCell(Text(fileInfo.date!)),
       DataCell(Text("$montant XOF")),
       DataCell(Text(fileInfo.nature!)),
     ],

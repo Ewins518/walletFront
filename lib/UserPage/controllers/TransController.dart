@@ -35,15 +35,6 @@ TransController(Map map){
     return output['error'];
  
   }
-
-  void refresh(){
-    demoTransaction.add(RecentOpr(
-      noCompte: _noCompte,
-      date: DateTime.now(),
-      montant: int.parse(_montant!),
-      nature: recu ? "Réçu" : "Envoyé" ));
-  }
-
   bool numCorrect() {
     if(_noCompte!.length == 8)
       return true;

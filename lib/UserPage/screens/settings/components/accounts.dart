@@ -1,4 +1,5 @@
-import 'package:apiproject/UserPage/models/RecentOperation.dart';
+import 'package:apiproject/UserPage/controllers/stats.dart';
+import 'package:apiproject/UserPage/models/MomoModel.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_svg/svg.dart';
@@ -34,19 +35,19 @@ class AllAccount extends StatelessWidget {
                 DataColumn(
                   label: Text("No Téléphone"),
                 ),
-                DataColumn(
-                  label: Text("Date d'ajout"),
-                ),
-                DataColumn(
-                  label: Text("Total réchargé"),
-                ),
+              //  DataColumn(
+              //    label: Text("Date d'ajout"),
+              //  ),
+              //  DataColumn(
+              //    label: Text("Total réchargé"),
+              //  ),
                  DataColumn(
                   label: Text("Total renversé"),
                 ),
               ],
               rows:  List.generate(
-                demoMomo.length,
-                (index) => recentOprDataRow(demoMomo[index]),
+                momo.length,
+                (index) => recentOprDataRow(momo[index]),
               ),
             ),
           ),
@@ -56,14 +57,13 @@ class AllAccount extends StatelessWidget {
   }
 }
 
-DataRow recentOprDataRow(RecentOpr fileInfo) {
+DataRow recentOprDataRow(MomoModel fileInfo) {
   int montant = fileInfo.montant!;
   return DataRow(
     cells: [
-      DataCell(Text(fileInfo.noCompte!)),
-      DataCell(Text(fileInfo.date!.toString())),
+     // DataCell(Text(fileInfo.noCompte!)),
+      DataCell(Text(fileInfo.phone!)),
       DataCell(Text("$montant XOF")),
-       DataCell(Text("$montant XOF")),
     ],
     
   );

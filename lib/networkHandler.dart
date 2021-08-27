@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 
 class NetworkHandler 
 {
-  String baseurl = "ultrapay49.loca.lt";
+  String baseurl = "ultrapay.herokuapp.com";
   var log = Logger();
   FlutterSecureStorage storage = FlutterSecureStorage();
 

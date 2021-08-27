@@ -23,7 +23,7 @@ AddMomoController(Map map){
      
     map["tel"] = _noTel!;
  
-    var responseAddMomo =  await networkHandler.post("/user/addcompte",map);
+    var responseAddMomo =  await networkHandler.post("/compte/addcompte",map);
      //AddMomo logic add here
      Map<String, dynamic> output = json.decode(responseAddMomo.body);
 
@@ -34,15 +34,6 @@ AddMomoController(Map map){
         return output['error'];
  
   }
-
- void refresh(){
-    demoRecentOpr.add(RecentOpr(
-      noCompte: _noTel,
-      date: DateTime.now(),
-      montant: _montant,
-      nature: _nature ));
-  }
-  
 
   void debiterCompte(){
     AddMomoController._solde = _montant!;

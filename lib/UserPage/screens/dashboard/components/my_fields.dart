@@ -29,6 +29,7 @@ void dispose() {
 @override
 void initState(){
   init ();
+  initRecharge();
   super.initState();
 }
   @override

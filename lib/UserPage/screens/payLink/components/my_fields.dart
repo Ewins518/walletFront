@@ -30,6 +30,7 @@ void dispose() {
 @override
 void initState(){
   init ();
+  initClient();
   super.initState();
 }
   @override

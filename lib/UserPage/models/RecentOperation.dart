@@ -1,8 +1,8 @@
 class RecentOpr {
-  final String? noCompte , nature;
+  final String? username, nature;
   final int ? montant;
-  final DateTime ? date;
- RecentOpr({this.noCompte, this.montant, this.date, this.nature});
+  final String ? date;
+ RecentOpr({this.username, this.montant, this.date, this.nature});
 }
 
 List demoRecentOpr = [];

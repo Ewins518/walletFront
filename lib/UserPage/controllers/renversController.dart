@@ -24,7 +24,7 @@ RenversementController(Map map){
     map["tel"] = _noTel!;
     map["montant"] = _montant.toString();
       print(map);
-    var responseRenversement =  await networkHandler.post("/user/renverser",map);
+    var responseRenversement =  await networkHandler.post("/compte/renverser",map);
      //Renversement logic add here
      Map<String, dynamic> output = json.decode(responseRenversement.body);
 
@@ -38,14 +38,6 @@ RenversementController(Map map){
 
         return output['error'];
  
-  }
-
- void refresh(){
-    demoRecentOpr.add(RecentOpr(
-      noCompte: _noTel,
-      date: DateTime.now(),
-      montant: _montant,
-      nature: _nature ));
   }
   
 

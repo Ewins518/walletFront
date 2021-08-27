@@ -1,4 +1,5 @@
 import 'package:apiproject/UserPage/controllers/AddMomoController.dart';
+import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/responsive.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
@@ -11,7 +12,6 @@ class AddAccount extends StatefulWidget {
 
 class _AddAccountState extends State<AddAccount> {
     TextEditingController _numberController = TextEditingController();
-    //TextEditingController _networkController = TextEditingController();
     final _globalKey = GlobalKey<FormState>();
       String ? addmm;
   @override
@@ -20,7 +20,11 @@ class _AddAccountState extends State<AddAccount> {
    _numberController.dispose();
     super.dispose();
   }
-
+@override
+void initState(){
+  initMomo();
+  super.initState();
+}
   @override
   Widget build(BuildContext context) {
     //final Size _size = MediaQuery.of(context).size;

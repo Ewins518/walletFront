@@ -1,4 +1,5 @@
-import 'package:apiproject/UserPage/models/RecentOperation.dart';
+import 'package:apiproject/UserPage/controllers/stats.dart';
+import 'package:apiproject/UserPage/models/RenversModel.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_svg/svg.dart';
@@ -42,8 +43,8 @@ class AllRenvers extends StatelessWidget {
                 ),
               ],
               rows:  List.generate(
-                demoRenversement.length,
-                (index) => recentOprDataRow(demoRenversement[index]),
+                renversement.length,
+                (index) => recentOprDataRow(renversement[index]),
               ),
             ),
           ),
@@ -53,13 +54,14 @@ class AllRenvers extends StatelessWidget {
   }
 }
 
-DataRow recentOprDataRow(RecentOpr fileInfo) {
+DataRow recentOprDataRow(RenversModel fileInfo) {
   int montant = fileInfo.montant!;
   return DataRow(
     cells: [
-      DataCell(Text(fileInfo.noCompte!)),
-      DataCell(Text(fileInfo.date!.toString())),
+      DataCell(Text(fileInfo.noTel!)),
       DataCell(Text("$montant XOF")),
+      DataCell(Text(fileInfo.date!)),
+      
     ],
     
   );

@@ -1,8 +1,9 @@
 import 'package:apiproject/UserPage/models/RecentOperation.dart';
+import 'package:apiproject/UserPage/models/RechargeModel.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_svg/svg.dart';
-
+import 'package:apiproject/UserPage/controllers/stats.dart';
 import '../../../constants.dart';
 
 class RecentOperation extends StatelessWidget {
@@ -22,7 +23,7 @@ class RecentOperation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Recents Operations",
+            "Les rechargéments",
             style: Theme.of(context).textTheme.subtitle1,
           ),
           SizedBox(
@@ -32,21 +33,21 @@ class RecentOperation extends StatelessWidget {
               minWidth: 600,
               columns: [
                 DataColumn(
-                  label: Text("Client"),
-                ),
-                DataColumn(
-                  label: Text("Date"),
+                  label: Text("Numéro"),
                 ),
                 DataColumn(
                   label: Text("Montant"),
                 ),
-                 DataColumn(
-                  label: Text("Nature"),
+                DataColumn(
+                  label: Text("Date"),
                 ),
+                // DataColumn(
+                //  label: Text("Nature"),
+                //),
               ],
               rows:  List.generate(
-                demoRecentOpr.length,
-                (index) => recentOprDataRow(demoRecentOpr[index]),
+                recharge.length,
+                (index) => recentOprDataRow(recharge[index]),
               ),
             ),
           ),
@@ -56,14 +57,14 @@ class RecentOperation extends StatelessWidget {
   }
 }
 
-DataRow recentOprDataRow(RecentOpr fileInfo) {
+DataRow recentOprDataRow(RechargeModel fileInfo) {
   int montant = fileInfo.montant!;
   return DataRow(
     cells: [
-      DataCell(Text(fileInfo.noCompte!)),
+     // DataCell(Text(fileInfo.noCompte!)),
       DataCell(Text(fileInfo.date!.toString())),
       DataCell(Text("$montant XOF")),
-      DataCell(Text(fileInfo.nature!)),
+      DataCell(Text(fileInfo.date!)),
     ],
     
   );

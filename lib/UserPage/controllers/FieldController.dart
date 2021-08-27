@@ -24,7 +24,7 @@ RechargeController(Map map){
     map["phone"] = _noTel!;
     map["montant"] = _montant.toString();
       
-    var responseRecharge =  await networkHandler.post("/user/recharge",map);
+    var responseRecharge =  await networkHandler.post("/compte/recharge",map);
      //recharge logic add here
      Map<String, dynamic> output = json.decode(responseRecharge.body);
 
@@ -36,14 +36,6 @@ RechargeController(Map map){
     return output['err'];
  
   }
-
- void refresh(){
-    demoRecentOpr.add(RecentOpr(
-      noCompte: _noTel,
-      date: DateTime.now(),
-      montant: _montant,
-      nature: _nature ));
-  }
   
 
   void debiterCompte(){
@@ -51,37 +43,3 @@ RechargeController(Map map){
   }
 
 }
-
-//NetworkHandler networkHandler = NetworkHandler();
-
-//
-// getSolde() async{ 
-//     var recupSolde =  await networkHandler.get("/user/solde");
-//     Map<String, dynamic> output = json.decode(recupSolde.body);
-//
-//     if(recupSolde.statusCode == 200 || recupSolde.statusCode == 201){
-//       print(output['solde']);
-//       return  output['solde'];
-//     }
-//    
-//
-//   return  "0";
-//  }
-//
-//montantTotalRecharger() async{ 
-//     var recupMTR =  await networkHandler.get("/user/montantrecharge");
-//     Map<String, dynamic> output = json.decode(recupMTR.body);
-//
-//     if(recupMTR.statusCode == 200 || recupMTR.statusCode == 201){
-//       print(output['result']);
-//      RechargeController._solde = output['result'];
-//        return  output['result'];
-//     }
-//  
-//   return 0;
-//  }
-//  
-//
-// //Future<int> get solde async => await getSolde();
-//  ///int.parse(getSolde().toString()) ;
- //Future<int> get montantTotalRecharge async =>await montantTotalRecharger();

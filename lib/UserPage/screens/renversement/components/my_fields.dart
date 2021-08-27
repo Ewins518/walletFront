@@ -25,6 +25,7 @@ class _AskRenversState extends State<AskRenvers> {
     @override
 void initState(){
   init ();
+  initRenversement();
   super.initState();
 }
   @override
