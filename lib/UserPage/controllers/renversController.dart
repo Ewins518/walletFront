@@ -1,13 +1,10 @@
 import 'dart:convert';
 
-import 'package:apiproject/UserPage/models/RecentOperation.dart';
 import 'package:apiproject/networkHandler.dart';
 
 class RenversementController {
-static  int _solde = 0;
 int ? _montant;
 String ? _noTel;
-String _nature = "Réchargé";
 NetworkHandler networkHandler = NetworkHandler();
 RenversementController(Map map){
 
@@ -39,10 +36,6 @@ RenversementController(Map map){
         return output['error'];
  
   }
-  
 
-  void debiterCompte(){
-    RenversementController._solde = _montant!;
-  }
 
 }

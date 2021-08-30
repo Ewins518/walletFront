@@ -57,12 +57,12 @@ class AllAccount extends StatelessWidget {
   }
 }
 
-DataRow recentOprDataRow(MomoModel fileInfo) {
-  int montant = fileInfo.montant!;
+DataRow recentOprDataRow(Map<String, dynamic> fileInfo) {
+  int montant = fileInfo["montant"];
   return DataRow(
     cells: [
      // DataCell(Text(fileInfo.noCompte!)),
-      DataCell(Text(fileInfo.phone!)),
+      DataCell(Text(fileInfo["phone"])),
       DataCell(Text("$montant XOF")),
     ],
     

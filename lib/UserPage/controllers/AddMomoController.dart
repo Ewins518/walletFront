@@ -1,13 +1,9 @@
 import 'dart:convert';
-
-import 'package:apiproject/UserPage/models/RecentOperation.dart';
 import 'package:apiproject/networkHandler.dart';
 
 class AddMomoController {
-static  int _solde = 0;
 int ? _montant;
 String ? _noTel;
-String _nature = "Réchargé";
 NetworkHandler networkHandler = NetworkHandler();
 
 AddMomoController(Map map){
@@ -33,10 +29,6 @@ AddMomoController(Map map){
     }
         return output['error'];
  
-  }
-
-  void debiterCompte(){
-    AddMomoController._solde = _montant!;
   }
 
 }

@@ -25,7 +25,7 @@ void initState(){
 }
   @override
   Widget build(BuildContext context) {
-    int mtr = montantTotalRecharge!;
+     int mtr = montantTotalRecharge!;
     return Container(
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
@@ -57,7 +57,7 @@ void initState(){
           StorageInfoCard(
             svgSrc: "assets/icons/drop_box.svg",
             title: "Montant total rechargé",
-            numOfOpr: mtr,
+            numOfOpr: mTR ? mtr : 0,
           ),
           StorageInfoCard(
             svgSrc: "assets/icons/client.svg",

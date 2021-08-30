@@ -7,9 +7,11 @@ int ? montantTotalRecharge;
 List clients = [];
 List transaction = [];
 List transact = [];
-List renversement = [];
+List<List> renversement = [];
 List recharge = [];
 List momo = [];
+bool mTR = false;
+List renvers = [];
 
 NetworkHandler networkHandler = NetworkHandler();
 void init ()async {
@@ -20,6 +22,8 @@ void init ()async {
 
 void initRenversement() async {
    renversement = await getRenversement();
+   renvers = convert(renversement);
+
 }
 
 void initTransaction() async {
@@ -59,8 +63,10 @@ montantTotalRecharger() async{
 
      if(recupMTR.statusCode == 200 || recupMTR.statusCode == 201){
        print(output['result']);
-     
-        return  output['result'];
+      if(output['result'] != null)
+        mTR = true;
+
+      return  output['result'];
      }
   
    return 0;
@@ -148,3 +154,14 @@ getClient() async{
   
    return 0;
   }
+
+  List convert(List<List> list) {
+   List listFinal = [];
+   int i = 0, j = 0 ;
+
+   for(i = 0; i < list.length; i++)
+     for(j = 0; j < list[i].length; j++)
+     listFinal.add(list[i][j]);
+     
+   return listFinal;
+ }

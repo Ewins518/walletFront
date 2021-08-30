@@ -40,6 +40,7 @@ dependencies:
   flutter_secure_storage: ^4.2.1
   logger: ^1.0.0
   flutter_email_sender: ^5.0.2
+  flash: ^2.0.1
 
 dev_dependencies:
   flutter_test:

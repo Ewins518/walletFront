@@ -58,14 +58,14 @@ class AllLinkInfo extends StatelessWidget {
   }
 }
 
-DataRow recentOprDataRow(Client fileInfo) {
-  int montant = fileInfo.montant!;
+DataRow recentOprDataRow(Map<String, dynamic> fileInfo) {
+  int montant = fileInfo["montant"];
   return DataRow(
     cells: [
-      DataCell(Text(fileInfo.username!)),
-      DataCell(Text(fileInfo.date!)),
+      DataCell(Text(fileInfo["username"])),
+      DataCell(Text(fileInfo["date"])),
       DataCell(Text("$montant XOF")),
-      DataCell(Text(fileInfo.desc!)),
+      DataCell(Text(fileInfo["desc"])),
     ],
     
   );

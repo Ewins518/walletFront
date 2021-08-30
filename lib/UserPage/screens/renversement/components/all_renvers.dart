@@ -43,8 +43,8 @@ class AllRenvers extends StatelessWidget {
                 ),
               ],
               rows:  List.generate(
-                renversement.length,
-                (index) => recentOprDataRow(renversement[index]),
+                renvers.length,
+                (index) =>  recentOprDataRow(renvers[index]),
               ),
             ),
           ),
@@ -54,13 +54,16 @@ class AllRenvers extends StatelessWidget {
   }
 }
 
-DataRow recentOprDataRow(RenversModel fileInfo) {
-  int montant = fileInfo.montant!;
+DataRow recentOprDataRow(Map<String, dynamic> fileInfo) {
+
+ // Map <String, dynamic> map = fileInfo.toMap();
+
+  int montant = fileInfo["montant"];
   return DataRow(
     cells: [
-      DataCell(Text(fileInfo.noTel!)),
+      DataCell(Text(fileInfo["noTel"])),
       DataCell(Text("$montant XOF")),
-      DataCell(Text(fileInfo.date!)),
+      DataCell(Text(fileInfo["date"])),
       
     ],
     

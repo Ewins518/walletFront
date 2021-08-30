@@ -57,14 +57,14 @@ class RecentOperation extends StatelessWidget {
   }
 }
 
-DataRow recentOprDataRow(RechargeModel fileInfo) {
-  int montant = fileInfo.montant!;
+DataRow recentOprDataRow(Map<String, dynamic> fileInfo) {
+  int montant = fileInfo["montant"];
   return DataRow(
     cells: [
      // DataCell(Text(fileInfo.noCompte!)),
-      DataCell(Text(fileInfo.date!.toString())),
+      DataCell(Text(fileInfo["numero"])),
       DataCell(Text("$montant XOF")),
-      DataCell(Text(fileInfo.date!)),
+      DataCell(Text(fileInfo["date"])),
     ],
     
   );

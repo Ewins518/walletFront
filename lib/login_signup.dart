@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:apiproject/networkHandler.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flash/flash.dart';
 import 'UserPage/constants.dart';
 import 'UserPage/controllers/MenuController.dart';
 import 'UserPage/screens/main/main_screen.dart';
@@ -25,7 +26,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   final _globalKey = GlobalKey<FormState>();
   NetworkHandler networkHandler = NetworkHandler();
   final storage = new FlutterSecureStorage();
-  
+  final Completer completer = new Completer();
+
   bool isRememberMe = false;
   bool validate = false;
   bool circular = false;
@@ -369,6 +371,14 @@ void dispose() {
 
                     if (!isSignupScreen) {
                       if(_globalKey.currentState!.validate()){
+
+                        var completer = Completer();
+                        Future.delayed(Duration(seconds: 10))
+                            .then((_) => completer.complete());
+                        context.showBlockDialog(
+                          dismissCompleter: completer,
+                        );
+
                        Map<String,String> data = {
                           "email": loginEmailController.text.trim(),
                           "password": loginPasswordController.text.trim(),
@@ -422,6 +432,14 @@ void dispose() {
                   else {
                     
                  if(_globalKey.currentState!.validate()){
+
+                  var completer = Completer();
+                  Future.delayed(Duration(seconds: 10))
+                      .then((_) => completer.complete());
+                  context.showBlockDialog(
+                    dismissCompleter: completer,
+                  );
+                  
                       Map<String,String> data = {
                           "name": registrationUserController.text.trim(),
                           "email": registrationEmailController.text.trim(),

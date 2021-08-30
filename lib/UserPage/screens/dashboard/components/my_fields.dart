@@ -115,9 +115,10 @@ void initState(){
                   
                        rcg = await RechargeController(data).init();
                        
-                       Navigator.pop(context);    
+                       Navigator.pop(context); 
+                       dialog("Récharger compte", rcg!);   
                    });  
-                   dialog("Récharger compte", rcg!); 
+                    
                   }
                  },
                  child: new Text(

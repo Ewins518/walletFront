@@ -57,14 +57,14 @@ class AllTransaction extends StatelessWidget {
   }
 }
 
-DataRow recentOprDataRow(RecentOpr fileInfo) {
-  int montant = fileInfo.montant!;
+DataRow recentOprDataRow(Map<String, dynamic> fileInfo) {
+  int montant = fileInfo["montant"];
   return DataRow(
     cells: [
-      DataCell(Text(fileInfo.username!)),
-      DataCell(Text(fileInfo.date!)),
+      DataCell(Text(fileInfo["username"])),
+      DataCell(Text(fileInfo["date"])),
       DataCell(Text("$montant XOF")),
-      DataCell(Text(fileInfo.nature!)),
+      DataCell(Text(fileInfo["nature"])),
     ],
     
   );

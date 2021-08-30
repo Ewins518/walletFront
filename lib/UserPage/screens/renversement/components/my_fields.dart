@@ -123,18 +123,19 @@ void initState(){
                     ),
                ),
                   new FlatButton(
-                 onPressed: () async {
+                 onPressed: (){
 
                    if(_globalKey.currentState!.validate()){
                     Map<String,String> data = {
-                          "noTel": _numberController.text,
+                          "phone": _numberController.text,
                           "montant": _montantController.text,
                           };  
-
+                     setState(() async{
                        rvsm = await RenversementController(data).init();
                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(rvsm!)));
 
                    Navigator.pop(context);
+                     });
                  }
                  },
                  child: new Text(
