@@ -372,18 +372,18 @@ void dispose() {
                     if (!isSignupScreen) {
                       if(_globalKey.currentState!.validate()){
 
-                        var completer = Completer();
-                        Future.delayed(Duration(seconds: 10))
-                            .then((_) => completer.complete());
-                        context.showBlockDialog(
-                          dismissCompleter: completer,
-                        );
+                      //  var completer = Completer();
+                      //  Future.delayed(Duration(seconds: 10))
+                      //      .then((_) => completer.complete());
+                      //  context.showBlockDialog(
+                      //    dismissCompleter: completer,
+                      //  );
 
                        Map<String,String> data = {
                           "email": loginEmailController.text.trim(),
                           "password": loginPasswordController.text.trim(),
                           };   
-                          var response =  await networkHandler.post("/user/login",data);
+                          var response =  await networkHandler.postWithoutToken("/user/login",data);
                          
                           if(response.statusCode == 200 || response.statusCode == 201){
                             Map<String, dynamic> output = json.decode(response.body);
@@ -434,7 +434,7 @@ void dispose() {
                  if(_globalKey.currentState!.validate()){
 
                   var completer = Completer();
-                  Future.delayed(Duration(seconds: 10))
+                  Future.delayed(Duration(seconds: 15))
                       .then((_) => completer.complete());
                   context.showBlockDialog(
                     dismissCompleter: completer,
@@ -455,7 +455,7 @@ void dispose() {
                           "password": registrationPasswordController.text.trim(),
                           }; 
                         
-                        var response = await networkHandler.post("/user/login",data1);
+                        var response = await networkHandler.postWithoutToken("/user/login",data1);
 
                         if(response.statusCode == 200 || response.statusCode == 201){
                                     

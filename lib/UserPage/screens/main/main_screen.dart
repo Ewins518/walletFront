@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:apiproject/UserPage/controllers/MenuController.dart';
 import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/screens/dashboard/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../responsive.dart';
 import 'components/side_menu.dart';
 
@@ -13,11 +14,13 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
+final Completer completer = new Completer();
 
 @override
 void initState(){
-  init ();
+  
+  init () ;
+  completer.complete();
   super.initState();
 }
   @override

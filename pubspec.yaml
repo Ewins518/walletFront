@@ -41,6 +41,9 @@ dependencies:
   logger: ^1.0.0
   flutter_email_sender: ^5.0.2
   flash: ^2.0.1
+  flutter_mailer: ^2.0.0
+  mailer: ^5.0.2
+  google_sign_in: ^5.0.7
 
 dev_dependencies:
   flutter_test:

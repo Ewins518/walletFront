@@ -1,7 +1,6 @@
 
 import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:flutter/material.dart';
-
 import '../../constants.dart';
 import '../../responsive.dart';
 import 'components/header.dart';
@@ -19,7 +18,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 @override
 void initState(){
-  init ();
+  
+    init ();
   super.initState();
 }
 

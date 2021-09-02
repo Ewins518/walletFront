@@ -45,6 +45,22 @@ class NetworkHandler
    return response;
   }
 
+   Future <http.Response> postWithoutToken(String url1, Map<String, String> body) async {
+   Uri url =formater(url1);
+   //String token = (await storage.read(key: "token"))!;
+
+    var response = await http.post(
+      url,
+      headers: {
+      //  "Authorization": "Bearer $token",
+        "Content-type": "application/json"
+        },
+      body: json.encode(body)
+      );
+
+   return response;
+  }
+
   Uri formater (String url){
     return Uri.https(baseurl,url);
   }

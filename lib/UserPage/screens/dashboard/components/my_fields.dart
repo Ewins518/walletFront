@@ -17,7 +17,7 @@ class _MyRefState extends State<MyRef> {
   TextEditingController _montantController = TextEditingController();
    final _globalKey = GlobalKey<FormState>();
   String ? rcg ;
-   int _index = 0;
+  
     
 void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -28,7 +28,7 @@ void dispose() {
 
 @override
 void initState(){
-  init ();
+  //init ();
   initRecharge();
   super.initState();
 }

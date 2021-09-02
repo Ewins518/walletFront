@@ -1,17 +1,19 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:apiproject/networkHandler.dart';
 
-int ? solde;
-int ? montantTotalRecharge;
+int solde = 0;
+int  montantTotalRecharge = 0;
 List clients = [];
 List transaction = [];
 List transact = [];
-List<List> renversement = [];
+
 List recharge = [];
 List momo = [];
 bool mTR = false;
 List renvers = [];
+final Completer completer = new Completer();
 
 NetworkHandler networkHandler = NetworkHandler();
 void init ()async {
@@ -21,9 +23,9 @@ void init ()async {
 }
 
 void initRenversement() async {
-   renversement = await getRenversement();
-   renvers = convert(renversement);
-
+  
+   renvers= await getRenversement();
+   
 }
 
 void initTransaction() async {
@@ -50,11 +52,12 @@ void initMomo() async {
 
      if(recupSolde.statusCode == 200 || recupSolde.statusCode == 201){
        print(output['solde']);
+       
        return  output['solde'];
      }
     
 
-   return  "0";
+   return  ;
   }
 
 montantTotalRecharger() async{ 
@@ -62,11 +65,7 @@ montantTotalRecharger() async{
      Map<String, dynamic> output = json.decode(recupMTR.body);
 
      if(recupMTR.statusCode == 200 || recupMTR.statusCode == 201){
-       print(output['result']);
-      if(output['result'] != null)
-        mTR = true;
-
-      return  output['result'];
+        return  output['result'];
      }
   
    return 0;
@@ -76,13 +75,13 @@ getClient() async{
      var recupClient =  await networkHandler.get("/link/get/linkusers");
      Map<String, dynamic> output = json.decode(recupClient.body);
 
-     if(recupClient.statusCode == 200 || recupClient.statusCode == 201){
+     if(recupClient.statusCode == 200 || recupClient.statusCode == 201 || recupClient.statusCode == 403){
        print(output['allData']);
      
         return  output['allData'];
      }
   
-   return 0;
+   return ;
   }
 
   getSendTransaction() async{ 
@@ -96,7 +95,7 @@ getClient() async{
         return  output['allData'];
      }
   
-   return 0;
+   return ;
   }
 
   getRcvTransaction() async{ 
@@ -110,7 +109,7 @@ getClient() async{
         return  output['allData'];
      }
   
-   return 0;
+   return ;
   }
 
   getRenversement() async{ 
@@ -124,7 +123,7 @@ getClient() async{
         return  output['Renversement'];
      }
   
-   return 0;
+   return ;
   }
 
   getRecharge() async{ 
@@ -134,11 +133,11 @@ getClient() async{
 
      if(recupR.statusCode == 200 || recupR.statusCode == 201 || recupR.statusCode == 403){
        print(output['allData']);
-     
+      
         return  output['allData'];
      }
   
-   return 0;
+   return ;
   }
 
   getMomoAccount() async{ 
@@ -152,16 +151,5 @@ getClient() async{
         return  output['allData'];
      }
   
-   return 0;
+   return ;
   }
-
-  List convert(List<List> list) {
-   List listFinal = [];
-   int i = 0, j = 0 ;
-
-   for(i = 0; i < list.length; i++)
-     for(j = 0; j < list[i].length; j++)
-     listFinal.add(list[i][j]);
-     
-   return listFinal;
- }

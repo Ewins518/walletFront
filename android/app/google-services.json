@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "854895039385",
+    "project_id": "ultrapay-324719",
+    "storage_bucket": "ultrapay-324719.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854895039385:android:4d0a41a4a6858a8b373908",
+        "android_client_info": {
+          "package_name": "com.company.ultrapay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854895039385-gl7ka35movk4ukm1575f8flp4rlajq1j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.company.ultrapay",
+            "certificate_hash": "0dfa846e9b3d148e8cd1a8b935189759fe1ae8ad"
+          }
+        },
+        {
+          "client_id": "854895039385-b19on1onvoar6qdelvi1ehnr14pv7ec6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-VbgY_jKcP67oWopgXr7QyY8HbY4bCoE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854895039385-b19on1onvoar6qdelvi1ehnr14pv7ec6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

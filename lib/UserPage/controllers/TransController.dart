@@ -23,7 +23,7 @@ TransController(Map map){
     map["noCompte"] = _noCompte!;
     map["montant"] = _montant!;
 
-    var responseTransaction =  await networkHandler.post("/user/transaction",map);
+    var responseTransaction =  await networkHandler.post("/compte/transaction",map);
      //Transaction logic add here
      Map<String, dynamic> output = json.decode(responseTransaction.body);
 

@@ -25,7 +25,7 @@ void initState(){
 }
   @override
   Widget build(BuildContext context) {
-     int mtr = montantTotalRecharge!;
+    // int mtr = montantTotalRecharge;
     return Container(
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
@@ -47,22 +47,22 @@ void initState(){
           StorageInfoCard(
             svgSrc: "assets/icons/trans.svg",
             title: "Nombre de transaction",
-            numOfOpr: nombreTransaction,
+            numOfOpr: transaction.length,
           ),
           StorageInfoCard(
             svgSrc: "assets/icons/renvers.svg",
             title: "Nombre de renversement",
-            numOfOpr: 0,
+            numOfOpr: renvers.length,
           ),
           StorageInfoCard(
             svgSrc: "assets/icons/drop_box.svg",
             title: "Montant total rechargé",
-            numOfOpr: mTR ? mtr : 0,
+            numOfOpr: montantTotalRecharge,
           ),
           StorageInfoCard(
             svgSrc: "assets/icons/client.svg",
             title: "Nombre de clients",
-            numOfOpr: 0,
+            numOfOpr: clients.length,
           ),
         ],
       ),
