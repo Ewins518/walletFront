@@ -1,6 +1,7 @@
 import 'package:apiproject/UserPage/controllers/linkController.dart';
 import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/responsive.dart';
+import 'package:ars_progress_dialog/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -133,6 +134,13 @@ void initState(){
                ),
                   new FlatButton(
                  onPressed: (){
+                   ArsProgressDialog progressDialog = ArsProgressDialog(
+                	context,
+                	blur: 2,
+                	backgroundColor: Color(0x33000000),
+                	animationDuration: Duration(milliseconds: 500));
+                  
+                  progressDialog.show();
                    if(_globalKey.currentState!.validate()){
                     Map<String,String> data = {
                           "desc": _descController.text,
@@ -141,65 +149,10 @@ void initState(){
                     setState(() async {
                     
                     result = await LinkController(data).init();
+                    progressDialog.dismiss();
                     Clipboard.setData(new ClipboardData (text: result));
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Le lien est copié dans le presse papier")));
-                    // String username = 'ewinsouromeo@gmail.com';
-                    // String password = "Ewin's@518";
-
-                    //  email1 = await getEmail();
-                    //  SmtpServer ? smtpServer;
-                    //  try {
-                    //   final googleSignIn = GoogleSignIn.standard(scopes: [
-                    //        'ewinsouromeo@gmail.com',
-                    //        'https://www.googleapis.com/auth/gmail.send'
-                    //      ]);
-                    //    
-                    //      // Signing in
-                    //      final account = await googleSignIn.signIn();
-                    //    
-                    //      if (account == null) {
-                    //        // User didn't authorize
-                    //        return;
-                    //      }
-                    //    
-                    //      final auth = await account.authentication;
-                    //    
-                    //      // Creating SMTP server from the access token
-                    //      smtpServer = gmailXoauth2(auth.accessToken!);
-                    //      print(smtpServer);
-                   //// smtpServer = gmail(username, password);
-                    //   final message = Message()
-                    //   ..from = Address(username, 'Ultrapay')
-                    //   ..recipients.add(email1) 
-                    //   ..subject = 'Un lien de paiement' 
-                    //   ..text = "Un nouveau de paiment vous a été envoyé. Copier et envoyer le à vos clients pour qu'ils puissent vous payer \n $result"; //body of the email
- //
-                    //    try {
-                    //       final sendReport = await send(message, smtpServer);
-                    //       print('Message sent: ' + sendReport.toString());
-                    //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Un lien de paiement a été envoyer sur votre compte mail")));
-//
-                    //     } on MailerException catch (e) {
-                    //       print('Message not sent. \n'+ e.toString()); //print if the email is not sent
-                    //      
-                    //     }
-//
-                    //   
-                    // 
-                    //  }on PlatformException catch (e) {
-                    //       
-                    //       print(e);
-                    //  }
-
-                      
-                   // final Email email = Email(
-                   //   body: "Un nouveau lien de paiement vous a été envoyé. $result",
-                   //   subject: "Lien de paiment",
-                   //   recipients: [email1!],
-                   //   isHTML: false,
-            // );
-
-                  // await FlutterEmailSender.send(email);
+                   
 
                      Navigator.pop(context);
                     });

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:apiproject/networkHandler.dart';
+import 'package:ars_progress_dialog/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -27,7 +28,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   NetworkHandler networkHandler = NetworkHandler();
   final storage = new FlutterSecureStorage();
   final Completer completer = new Completer();
-
+ 
+  
   bool isRememberMe = false;
   bool validate = false;
   bool circular = false;
@@ -41,10 +43,18 @@ void dispose() {
     registrationEmailController.dispose();
     registrationPasswordController.dispose();
     registrationUserController.dispose();
+     //_route?.removeScopedWillPopCallback(_onWillPop);
+     //_route = null;
     super.dispose();
   }
 
 
+//void changedExternalState() {
+//  super.changedExternalState();
+//  _modalBarrier.markNeedsBuild();
+//  if (_scopeKey.currentState != null)
+//    _scopeKey.currentState!._forceRebuildPage();
+//}
   @override
   Widget build(BuildContext context) {
      Size size = MediaQuery.of(context).size;
@@ -371,20 +381,21 @@ void dispose() {
 
                     if (!isSignupScreen) {
                       if(_globalKey.currentState!.validate()){
-
-                      //  var completer = Completer();
-                      //  Future.delayed(Duration(seconds: 10))
-                      //      .then((_) => completer.complete());
-                      //  context.showBlockDialog(
-                      //    dismissCompleter: completer,
-                      //  );
-
+                     ArsProgressDialog progressDialog = ArsProgressDialog(
+                  	context,
+                  	blur: 2,
+                  	backgroundColor: Color(0x33000000),
+                  	animationDuration: Duration(milliseconds: 500));
+                     
+                     progressDialog.show();
+                        
                        Map<String,String> data = {
                           "email": loginEmailController.text.trim(),
                           "password": loginPasswordController.text.trim(),
-                          };   
+                          }; 
+                            
                           var response =  await networkHandler.postWithoutToken("/user/login",data);
-                         
+                          
                           if(response.statusCode == 200 || response.statusCode == 201){
                             Map<String, dynamic> output = json.decode(response.body);
                             print(output['token']);
@@ -393,8 +404,9 @@ void dispose() {
                              setState(() {
                               validate = true;
                               circular = false;
+                              progressDialog.dismiss();
                             });
-                            Navigator.pushReplacement(
+                            Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                       builder: (context) =>
@@ -407,7 +419,8 @@ void dispose() {
                   child: MainScreen(),
                  ),
                 ),
-                );
+                 (route) => false
+                 );
                     } else if (response.statusCode == 401) {
 
                        setState(() {
@@ -433,13 +446,14 @@ void dispose() {
                     
                  if(_globalKey.currentState!.validate()){
 
-                  var completer = Completer();
-                  Future.delayed(Duration(seconds: 15))
-                      .then((_) => completer.complete());
-                  context.showBlockDialog(
-                    dismissCompleter: completer,
-                  );
+                ArsProgressDialog progressDialog = ArsProgressDialog(
+                	context,
+                	blur: 2,
+                	backgroundColor: Color(0x33000000),
+                	animationDuration: Duration(milliseconds: 500));
                   
+                  progressDialog.show();
+
                       Map<String,String> data = {
                           "name": registrationUserController.text.trim(),
                           "email": registrationEmailController.text.trim(),
@@ -465,6 +479,7 @@ void dispose() {
                             setState(() {
                               validate = true;
                               circular = false;
+                              progressDialog.dismiss();
                             });
 
                                    Navigator.pushReplacement(
@@ -506,48 +521,6 @@ void dispose() {
       ),
     );
   }
-
-checkUser() async {
-    if(registrationUserController.text.length==0) {
-      setState(() {
-        circular=false;
-        validate=false;
-        errorText="Le nom d'utilisateur ne peut être vide";
-      });
-    }
-    else if(registrationUserController.text.split(' ').length < 2){
-       setState(() {
-        circular=false;
-        validate=false;
-        errorText="Nom et prénom svp";
-      });
-    }
-     else {
-         setState(() {
-        //circular=false;
-        validate=true;
-        
-      });
-    }
-}
-
-checkEmailPassword(String ? value, String field){
-  if(value!.isEmpty)
-    return "$field can't be empty";
-  
-  if(field == "Password"){
-
-    if(value.length < 7)
-      return "Password lenght must >= 7";
-  }
-  
-  else {
-    if(!value.contains("@"))
-        return "Email is invalide";
-  }
-
-  return null;
-}
 
   Widget buildTextField( IconData icon, String hintText, bool isPassword,
    bool isEmail, bool isName, TextEditingController controller) {

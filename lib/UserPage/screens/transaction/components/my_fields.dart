@@ -2,6 +2,7 @@ import 'package:apiproject/UserPage/controllers/FieldController.dart';
 import 'package:apiproject/UserPage/controllers/TransController.dart';
 import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/responsive.dart';
+import 'package:ars_progress_dialog/dialog.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
 
@@ -130,7 +131,14 @@ void initState(){
                ),
                   new FlatButton(
                  onPressed: (){
-
+                  if(_globalKey.currentState!.validate()){
+                    ArsProgressDialog progressDialog = ArsProgressDialog(
+                	context,
+                	blur: 2,
+                	backgroundColor: Color(0x33000000),
+                	animationDuration: Duration(milliseconds: 500));
+                  
+                  progressDialog.show();
                     Map<String,String> data = {
                           "noCompte": _numberController.text,
                           "montant": _montantController.text,
@@ -138,6 +146,8 @@ void initState(){
                     setState(() async {
                      
                     transaction = await TransController(data).init();
+                      initTransaction();
+                    progressDialog.dismiss();
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(transaction!)));
 
                     
@@ -145,6 +155,7 @@ void initState(){
                     });
                        //   print(data);
                   
+                 }
                  },
                  child: new Text(
                    "Continuer",

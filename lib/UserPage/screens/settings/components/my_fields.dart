@@ -1,6 +1,7 @@
 import 'package:apiproject/UserPage/controllers/AddMomoController.dart';
 import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/responsive.dart';
+import 'package:ars_progress_dialog/dialog.dart';
 import 'package:flutter/material.dart';
 import '../../../constants.dart';
 
@@ -122,11 +123,20 @@ void initState(){
                  onPressed: () {
                   
                   if(_globalKey.currentState!.validate()){
+                    ArsProgressDialog progressDialog = ArsProgressDialog(
+                	context,
+                	blur: 2,
+                	backgroundColor: Color(0x33000000),
+                	animationDuration: Duration(milliseconds: 500));
+                  
+                  progressDialog.show();
                     Map<String,String> data = {
                           "phone": _numberController.text
                           };  
                   setState(()async {
                      addmm =await AddMomoController(data).init();
+                     initMomo();
+                     progressDialog.dismiss();
                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(addmm!)));
 
                    Navigator.pop(context);

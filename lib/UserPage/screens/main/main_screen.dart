@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:apiproject/UserPage/controllers/MenuController.dart';
 import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/screens/dashboard/dashboard_screen.dart';
+import 'package:ars_progress_dialog/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../responsive.dart';
@@ -15,14 +16,20 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
 final Completer completer = new Completer();
+ 
 
 @override
 void initState(){
   
-  init () ;
-  completer.complete();
+  init ();
+  initRecharge();
   super.initState();
+ 
 }
+    
+void dispose() {
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'package:ars_progress_dialog/dialog.dart';
+import 'package:flash/flash.dart';
 import 'package:apiproject/UserPage/controllers/FieldController.dart';
 import 'package:apiproject/UserPage/controllers/stats.dart';
 import 'package:apiproject/UserPage/responsive.dart';
@@ -16,8 +19,11 @@ class _MyRefState extends State<MyRef> {
   TextEditingController _numberController = TextEditingController();
   TextEditingController _montantController = TextEditingController();
    final _globalKey = GlobalKey<FormState>();
+   final Completer completer = new Completer();
+   ModalRoute<dynamic> ? _route;
+   Future<bool> _onWillPop() => Future.value(false);
   String ? rcg ;
-  
+ 
     
 void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -27,11 +33,11 @@ void dispose() {
   }
 
 @override
-void initState(){
-  //init ();
-  initRecharge();
-  super.initState();
-}
+//void initState(){
+//  //init ();
+//  initRecharge();
+//  super.initState();
+//}
   @override
   Widget build(BuildContext context) {
    final Size _size = MediaQuery.of(context).size;
@@ -105,6 +111,14 @@ void initState(){
 
                  onPressed: (){
                   if(_globalKey.currentState!.validate()){
+                  ArsProgressDialog progressDialog = ArsProgressDialog(
+                	context,
+                	blur: 2,
+                	backgroundColor: Color(0x33000000),
+                	animationDuration: Duration(milliseconds: 500));
+                  
+                  progressDialog.show();
+
                    Map<String,String> data = {
                           "phone": _numberController.text.trim(),
                           "montant": _montantController.text.trim(),
@@ -114,9 +128,13 @@ void initState(){
                    setState(() async{
                   
                        rcg = await RechargeController(data).init();
-                       
+                       initRecharge();
+
                        Navigator.pop(context); 
-                       dialog("Récharger compte", rcg!);   
+                       progressDialog.dismiss();
+                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(rcg!)));
+
+                   //    dialog("Récharger compte", rcg!);   
                    });  
                     
                   }
