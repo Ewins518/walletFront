@@ -47,7 +47,7 @@ void dispose() {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Ref: ",
+              "Ref: $noCompte",
               style: Theme.of(context).textTheme.subtitle1,
             ),
             ElevatedButton.icon(
@@ -80,20 +80,22 @@ void dispose() {
           title:new Text("Récharger compte", textScaleFactor: 1, style: TextStyle(color: Colors.black),),
           content:   Container(
             width: 100,
-            height: 120,
+            height: 170,
                margin: EdgeInsets.only(top: 20),
                child: Form(
                  key: _globalKey,
-                 child: Column(
-                     children: [
-                       buildTextField( "Number", true,_numberController ),
+                 child: SingleChildScrollView(
+                   child: Column(
+                       children: [
+                         buildTextField( "Number", true,_numberController ),
+                         
+                         buildTextField( "Montant",false, _montantController),
                        
-                       buildTextField( "Montant",false, _montantController),
-                     
-                        Row(
+                          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,),
               ],
           ),
+                 ),
                ),
           ),
           contentPadding: EdgeInsets.all(10),

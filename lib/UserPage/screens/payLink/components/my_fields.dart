@@ -142,6 +142,7 @@ void initState(){
                   
                   progressDialog.show();
                    if(_globalKey.currentState!.validate()){
+                     progressDialog.show();
                     Map<String,String> data = {
                           "desc": _descController.text,
                           "montant": _montantController.text,

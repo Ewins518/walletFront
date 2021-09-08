@@ -35,7 +35,7 @@ void initState(){
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Ref: ",
+              "Ref: $noCompte",
               style: Theme.of(context).textTheme.subtitle1,
             ),
             if(!Responsive.isMobile(context))
@@ -179,7 +179,9 @@ void initState(){
             
               if(value!.isEmpty)
                 return "Entrer le numéro de téléphone";
-            
+              if(value.length != 8)
+                return "Format du numéro : ********";
+              return null;
           }
       ),
     );

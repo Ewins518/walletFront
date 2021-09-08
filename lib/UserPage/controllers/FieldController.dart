@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:apiproject/UserPage/models/RecentOperation.dart';
 import 'package:apiproject/networkHandler.dart';
 
 class RechargeController {
@@ -33,7 +31,7 @@ RechargeController(Map map){
         return output['message'];
     }
 
-    return output['err'];
+    return output['error'];
  
   }
   

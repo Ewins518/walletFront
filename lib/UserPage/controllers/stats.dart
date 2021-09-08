@@ -8,7 +8,7 @@ int  montantTotalRecharge = 0;
 List clients = [];
 List transaction = [];
 List transact = [];
-
+String noCompte = "";
 List recharge = [];
 List momo = [];
 bool mTR = false;
@@ -25,7 +25,11 @@ void init ()async {
 void initRenversement() async {
   
    renvers= await getRenversement();
-   
+}
+
+void accountNumber() async {
+  
+   noCompte = await getAccountNumber();
 }
 
 void initTransaction() async {
@@ -54,6 +58,20 @@ void initMomo() async {
        print(output['solde']);
        
        return  output['solde'];
+     }
+    
+
+   return  ;
+  }
+
+   getAccountNumber() async{ 
+     var recupSolde =  await networkHandler.get("/compte/number");
+     Map<String, dynamic> output = json.decode(recupSolde.body);
+
+     if(recupSolde.statusCode == 200 || recupSolde.statusCode == 201){
+       print(output['noCompte']);
+       
+       return  output['noCompte'].toString();
      }
     
 

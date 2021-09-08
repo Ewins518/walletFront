@@ -248,38 +248,40 @@ void dispose() {
       margin: EdgeInsets.only(top: 20),
       child: Form(
          key: _globalKey,
-        child: Column(
-          children: [
-            buildTextField(Icons.mail_outline, "info@demouri.com", false, true, false, loginEmailController),
-            buildTextField(
-                MaterialCommunityIcons.lock_outline, "**********", true, false, false, loginPasswordController),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isRememberMe,
-                      activeColor: Colors.black,
-                      autofocus: true,
-                      onChanged: (value) {
-                        setState(() {
-                          isRememberMe = !isRememberMe;
-                        });
-                      },
-                    ),
-                    Text("Remember me",
-                        style: TextStyle(fontSize: 12, color: Palette.textColor1))
-                  ],
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text("Forgot Password?",
-                      style: TextStyle(fontSize: 12, color: Palette.textColor1)),
-                )
-              ],
-            )
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildTextField(Icons.mail_outline, "info@demouri.com", false, true, false, loginEmailController),
+              buildTextField(
+                  MaterialCommunityIcons.lock_outline, "**********", true, false, false, loginPasswordController),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: isRememberMe,
+                        activeColor: Colors.black,
+                        autofocus: true,
+                        onChanged: (value) {
+                          setState(() {
+                            isRememberMe = !isRememberMe;
+                          });
+                        },
+                      ),
+                      Text("Remember me",
+                          style: TextStyle(fontSize: 12, color: Palette.textColor1))
+                    ],
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text("Forgot Password?",
+                        style: TextStyle(fontSize: 12, color: Palette.textColor1)),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -290,16 +292,18 @@ void dispose() {
       margin: EdgeInsets.only(top: 20),
       child: Form(
         key: _globalKey,
-        child: Column(
-          children: [
-            buildTextField(MaterialCommunityIcons.account_outline, "Nom et prénom",
-                false, false, true, registrationUserController),
-            buildTextField(
-                MaterialCommunityIcons.email_outline, "email", false, true, false, registrationEmailController),
-            buildTextField(
-                MaterialCommunityIcons.lock_outline, "password", true, false, false, registrationPasswordController),
-            
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildTextField(MaterialCommunityIcons.account_outline, "Nom et prénom",
+                  false, false, true, registrationUserController),
+              buildTextField(
+                  MaterialCommunityIcons.email_outline, "email", false, true, false, registrationEmailController),
+              buildTextField(
+                  MaterialCommunityIcons.lock_outline, "password", true, false, false, registrationPasswordController),
+              
+            ],
+          ),
         ),
       ),
     );
@@ -421,12 +425,13 @@ void dispose() {
                 ),
                  (route) => false
                  );
-                    } else if (response.statusCode == 401) {
+                    } else if (response.statusCode == 401 || response.statusCode == 403) {
 
                        setState(() {
                               Map<String, dynamic> output = json.decode(response.body);
                               validate = false;
-                              print(output['error']);
+                              
+                              progressDialog.dismiss();
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(output['error'])));
                                errorText = output['error'];
                               circular = false;
@@ -497,7 +502,7 @@ void dispose() {
                       ),
                       );
                      }
-                     else if (response.statusCode == 403) {
+                     else if (response.statusCode == 403 || response.statusCode == 401) {
 
                        setState(() {
                               Map<String, dynamic> output = json.decode(response.body);
